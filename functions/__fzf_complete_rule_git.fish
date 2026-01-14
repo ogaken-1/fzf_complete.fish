@@ -121,7 +121,8 @@ function __fzf_complete_rule_git
     # git switch
   else if string match -rq '^git switch(?: .*)? $' -- $cmd
     set source $FZF_COMPLETE_GIT_BRANCH_SOURCE
-    set -a opts $FZF_COMPLETE_GIT_PRESET_REF --prompt='Git Switch> '
+    set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER --prompt='Git Switch> '
+    set transformer __fzf_complete_git_ref_to_arg
 
     # git restore --source
   else if string match -rq '^git restore(?: .*)? (?:-s |--source[= ])$' -- $cmd
