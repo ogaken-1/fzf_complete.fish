@@ -24,9 +24,9 @@ Add overlay to home-manager configuration.
 
 ```nix
 {
-  nixpkgs.overlays = {
+  nixpkgs.overlays = [
     inputs.fish-fzf-complete.overlays.default
-  };
+  ];
 }
 ```
 
