@@ -9,7 +9,7 @@ let
 in
 buildFishPlugin {
   pname = "fzf-complete";
-  version = "0.0.0";
+  version = "0.1.0";
 
   inputs = [
     fzf
