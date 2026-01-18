@@ -273,6 +273,21 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> '
     return 0
 
+  # git push remote
+  else if string match -rq '^git push(?: .*)? $' -- $cmd
+    and not string match -rq '^git push(?=.* [^-]) .* ' -- $cmd
+    and not string match -rq ' --(?:repo|receive-pack|push-option|signed) $' -- $cmd
+    and not string match -rq ' -o $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' remote false file 'Git Push Remote> '
+    return 0
+
+  # git push branch (after remote)
+  else if string match -rq '^git push(?=.* [^-]) .* $' -- $cmd
+    and not string match -rq ' --(?:repo|receive-pack|push-option|signed) $' -- $cmd
+    and not string match -rq ' -o $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Push Branch> '
+    return 0
+
   else
     return 1
   end

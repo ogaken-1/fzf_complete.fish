@@ -381,12 +381,23 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git describe with --all" (__fzf_complete_git_parse_cmdline "git describe --all ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
 
 # ============================================================
+# 39. git push
+# ============================================================
+@test "git push" (__fzf_complete_git_parse_cmdline "git push ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Push Remote> ')
+@test "git push with options" (__fzf_complete_git_parse_cmdline "git push -f ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Push Remote> ')
+@test "git push origin" (__fzf_complete_git_parse_cmdline "git push origin ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Push Branch> ')
+@test "git push origin main" (__fzf_complete_git_parse_cmdline "git push origin main ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Push Branch> ')
+
+# git push exclusions
+@test "git push --repo should not match" (not __fzf_complete_git_parse_cmdline "git push --repo ") $status -eq 0
+@test "git push -o should not match" (not __fzf_complete_git_parse_cmdline "git push -o ") $status -eq 0
+
+# ============================================================
 # No match cases
 # ============================================================
 @test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0
 @test "git without space returns 1" (not __fzf_complete_git_parse_cmdline "git") $status -eq 0
 @test "git status returns 1" (not __fzf_complete_git_parse_cmdline "git status ") $status -eq 0
-@test "git push returns 1" (not __fzf_complete_git_parse_cmdline "git push ") $status -eq 0
 @test "git pull returns 1" (not __fzf_complete_git_parse_cmdline "git pull ") $status -eq 0
 @test "git fetch returns 1" (not __fzf_complete_git_parse_cmdline "git fetch ") $status -eq 0
 @test "git clone returns 1" (not __fzf_complete_git_parse_cmdline "git clone ") $status -eq 0
