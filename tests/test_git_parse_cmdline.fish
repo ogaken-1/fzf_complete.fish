@@ -199,14 +199,14 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 20.6 git restore (no source) - worktree file completion
 # ============================================================
-@test "git restore" (__fzf_complete_git_parse_cmdline "git restore ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
-@test "git restore --worktree" (__fzf_complete_git_parse_cmdline "git restore --worktree ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
-@test "git restore -W" (__fzf_complete_git_parse_cmdline "git restore -W ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
-@test "git restore --staged --worktree" (__fzf_complete_git_parse_cmdline "git restore --staged --worktree ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
-@test "git restore -S -W" (__fzf_complete_git_parse_cmdline "git restore -S -W ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
-@test "git restore -SW" (__fzf_complete_git_parse_cmdline "git restore -SW ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
-@test "git restore -WS" (__fzf_complete_git_parse_cmdline "git restore -WS ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
-@test "git restore with file" (__fzf_complete_git_parse_cmdline "git restore file.txt ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
+@test "git restore" (__fzf_complete_git_parse_cmdline "git restore ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
+@test "git restore --worktree" (__fzf_complete_git_parse_cmdline "git restore --worktree ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
+@test "git restore -W" (__fzf_complete_git_parse_cmdline "git restore -W ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
+@test "git restore --staged --worktree" (__fzf_complete_git_parse_cmdline "git restore --staged --worktree ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
+@test "git restore -S -W" (__fzf_complete_git_parse_cmdline "git restore -S -W ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
+@test "git restore -SW" (__fzf_complete_git_parse_cmdline "git restore -SW ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
+@test "git restore -WS" (__fzf_complete_git_parse_cmdline "git restore -WS ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
+@test "git restore with file" (__fzf_complete_git_parse_cmdline "git restore file.txt ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
 
 # git restore exclusions
 @test "git restore --pathspec-from-file should not match" (not __fzf_complete_git_parse_cmdline "git restore --pathspec-from-file ") $status -eq 0
