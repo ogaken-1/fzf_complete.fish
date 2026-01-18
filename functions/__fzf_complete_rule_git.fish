@@ -129,6 +129,31 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Restore Files> '
     return 0
 
+  # git restore --staged --worktree (both) - worktree file completion
+  else if string match -rq '^git restore .* $' -- $cmd
+    and string match -rq ' (?:--staged|-[SW]*S[SW]*)' -- $cmd
+    and string match -rq ' (?:--worktree|-[SW]*W[SW]*)' -- $cmd
+    and not string match -rq ' (?:-s |--source[= ])' -- $cmd
+    and not string match -rq ' --pathspec-from-file ' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> '
+    return 0
+
+  # git restore --staged (no source) - staged file completion
+  else if string match -rq '^git restore .* $' -- $cmd
+    and string match -rq ' (?:--staged|-[SW]*S[SW]*)' -- $cmd
+    and not string match -rq ' (?:-s |--source[= ])' -- $cmd
+    and not string match -rq ' (?:--worktree|-[SW]*W[SW]*)' -- $cmd
+    and not string match -rq ' --pathspec-from-file ' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' staged_file true file 'Git Restore Staged> '
+    return 0
+
+  # git restore (no source) - worktree file completion
+  else if string match -rq '^git restore(?: .*)? $' -- $cmd
+    and not string match -rq ' (?:-s |--source[= ])' -- $cmd
+    and not string match -rq ' --pathspec-from-file ' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> '
+    return 0
+
   # git rebase branch
   else if string match -rq '^git rebase(?=.*(?<! (?:-[xsX]|--exec|--strategy(?:-options)?|--onto)) [^-]) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Rebase Branch> '
@@ -250,6 +275,10 @@ function __fzf_complete_git_build_config
     case ls_file
       set source $FZF_COMPLETE_GIT_LS_FILES_SOURCE
       set -a opts $FZF_COMPLETE_GIT_PRESET_LS_FILES
+
+    case staged_file
+      set source $FZF_COMPLETE_GIT_STAGED_SOURCE
+      set -a opts $FZF_COMPLETE_GIT_PRESET_STAGED
 
     case branch
       set source $FZF_COMPLETE_GIT_BRANCH_SOURCE
