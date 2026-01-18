@@ -68,9 +68,11 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git checkout branch files" (__fzf_complete_git_parse_cmdline "git checkout main ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Checkout Branch Files> ')
 @test "git checkout branch files with --" (__fzf_complete_git_parse_cmdline "git checkout main -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Checkout Branch Files> ')
 
+# git checkout -b/-B with new branch name should trigger start-point completion
+@test "git checkout -b branch should be start-point" (__fzf_complete_git_parse_cmdline "git checkout -b main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> ')
+@test "git checkout -B branch should be start-point" (__fzf_complete_git_parse_cmdline "git checkout -B main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> ')
+
 # git checkout branch files should not trigger when preceded by these options
-@test "git checkout -b branch should not be checkout branch files" (__fzf_complete_git_parse_cmdline "git checkout -b main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
-@test "git checkout -B branch should not be checkout branch files" (__fzf_complete_git_parse_cmdline "git checkout -B main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
 @test "git checkout --orphan branch should not be checkout branch files" (__fzf_complete_git_parse_cmdline "git checkout --orphan main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
 @test "git checkout --track branch should not be checkout branch files" (__fzf_complete_git_parse_cmdline "git checkout --track main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
 
@@ -156,6 +158,12 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git switch" (__fzf_complete_git_parse_cmdline "git switch ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
 @test "git switch with -c" (__fzf_complete_git_parse_cmdline "git switch -c ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
 @test "git switch with --create" (__fzf_complete_git_parse_cmdline "git switch --create ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
+
+# git switch start-point
+@test "git switch -c newbranch" (__fzf_complete_git_parse_cmdline "git switch -c newbranch ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Switch Start> ')
+@test "git switch -C newbranch" (__fzf_complete_git_parse_cmdline "git switch -C newbranch ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Switch Start> ')
+@test "git switch --create newbranch" (__fzf_complete_git_parse_cmdline "git switch --create newbranch ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Switch Start> ')
+@test "git switch --detach" (__fzf_complete_git_parse_cmdline "git switch --detach ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Switch Detach> ')
 
 # ============================================================
 # 19. git restore --source

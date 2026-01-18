@@ -69,6 +69,11 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Commit Files> '
     return 0
 
+  # git checkout -b/-B with new branch name (start-point completion)
+  else if string match -rq '^git checkout (?:-[bB]) [^ ]+ $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> '
+    return 0
+
   # git checkout branch files
   else if string match -rq '^git checkout(?=.*(?<! (?:-[bBt]|--orphan|--track|--conflict|--pathspec-from-file)) [^-]) .* $' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
@@ -131,6 +136,16 @@ function __fzf_complete_git_parse_cmdline
   else if string match -rq '^git reset(?: .*)? $' -- $cmd
     and not string match -rq ' --pathspec-from-file $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Reset Files> '
+    return 0
+
+  # git switch -c/-C/--create with new branch name (start-point completion)
+  else if string match -rq '^git switch (?:-[cC]|--create) [^ ]+ $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Switch Start> '
+    return 0
+
+  # git switch --detach
+  else if string match -rq '^git switch(?: .*)? --detach(?: )?$' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Switch Detach> '
     return 0
 
   # git switch
