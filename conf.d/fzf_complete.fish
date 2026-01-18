@@ -53,7 +53,8 @@ set -g FZF_COMPLETE_COMMON_OPTS \
   --expect=alt-enter \
   --height='80%' \
   --print0 \
-  --no-separator
+  --no-separator \
+  --select-1
 
 # === Headers ===
 set -g FZF_COMPLETE_GIT_REF_HEADER_FULL 'C-b: branch, C-c: commit, C-t: tag, C-r: reflog'
