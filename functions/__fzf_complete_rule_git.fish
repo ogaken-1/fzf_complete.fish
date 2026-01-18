@@ -246,6 +246,12 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Revert> '
     return 0
 
+  # git cherry-pick
+  else if string match -rq '^git cherry-pick(?: .*)? $' -- $cmd
+    and not string match -rq ' --(?:continue|abort|skip|quit)' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> '
+    return 0
+
   else
     return 1
   end

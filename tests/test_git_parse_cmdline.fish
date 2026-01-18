@@ -332,6 +332,19 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git revert with --no-commit" (__fzf_complete_git_parse_cmdline "git revert --no-commit ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Revert> ')
 
 # ============================================================
+# 34. git cherry-pick
+# ============================================================
+@test "git cherry-pick" (__fzf_complete_git_parse_cmdline "git cherry-pick ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> ')
+@test "git cherry-pick with -n" (__fzf_complete_git_parse_cmdline "git cherry-pick -n ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> ')
+@test "git cherry-pick with commit" (__fzf_complete_git_parse_cmdline "git cherry-pick abc123 ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> ')
+
+# git cherry-pick exclusions (control flow options)
+@test "git cherry-pick --continue should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --continue ") $status -eq 0
+@test "git cherry-pick --abort should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --abort ") $status -eq 0
+@test "git cherry-pick --skip should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --skip ") $status -eq 0
+@test "git cherry-pick --quit should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --quit ") $status -eq 0
+
+# ============================================================
 # No match cases
 # ============================================================
 @test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0
