@@ -147,26 +147,26 @@ function __fzf_complete_git_parse_cmdline
     return 0
 
   # git merge
-  else if string match -rq 'git merge(?: .*)? $' -- $cmd
+  else if string match -rq '^git merge(?: .*)? $' -- $cmd
     and not string match -rq ' -[mFsX] $' -- $cmd
     and not string match -rq ' --(?:file|strategy(?:-option)?) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Merge> '
     return 0
 
   # git stash apply/drop/pop/show
-  else if string match -rq 'git stash (?:apply|drop|pop|show)(?: .*)? $' -- $cmd
-    or string match -rq 'git stash branch(?=.* [^-]) .* $' -- $cmd
-    echo "stash\tfalse\tstash\tGit Stash> "
+  else if string match -rq '^git stash (?:apply|drop|pop|show)(?: .*)? $' -- $cmd
+    or string match -rq '^git stash branch(?=.* [^-]) .* $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' stash false stash 'Git Stash> '
     return 0
 
   # git stash branch
-  else if string match -rq 'git stash branch(?: .*)? $' -- $cmd
-    echo "branch\tfalse\tref_full\tGit Stash Branch> "
+  else if string match -rq '^git stash branch(?: .*)? $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Stash Branch> '
     return 0
 
   # git stash push files
-  else if string match -rq 'git stash push(?: .*)? $' -- $cmd
-    echo "status_file\ttrue\tfile\tGit Stash Push Files> "
+  else if string match -rq '^git stash push(?: .*)? $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Push Files> '
     return 0
 
   # git log file
