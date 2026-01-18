@@ -411,6 +411,25 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git fetch --upload-pack should not match" (not __fzf_complete_git_parse_cmdline "git fetch --upload-pack ") $status -eq 0
 
 # ============================================================
+# 42. git bisect
+# ============================================================
+@test "git bisect start" (__fzf_complete_git_parse_cmdline "git bisect start ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+@test "git bisect start with bad" (__fzf_complete_git_parse_cmdline "git bisect start HEAD ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+@test "git bisect bad" (__fzf_complete_git_parse_cmdline "git bisect bad ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+@test "git bisect good" (__fzf_complete_git_parse_cmdline "git bisect good ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+@test "git bisect good with commit" (__fzf_complete_git_parse_cmdline "git bisect good v1.0 ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+@test "git bisect new" (__fzf_complete_git_parse_cmdline "git bisect new ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+@test "git bisect old" (__fzf_complete_git_parse_cmdline "git bisect old ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+@test "git bisect skip" (__fzf_complete_git_parse_cmdline "git bisect skip ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+@test "git bisect reset" (__fzf_complete_git_parse_cmdline "git bisect reset ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
+
+# git bisect subcommands without completion
+@test "git bisect next should not match" (not __fzf_complete_git_parse_cmdline "git bisect next ") $status -eq 0
+@test "git bisect log should not match" (not __fzf_complete_git_parse_cmdline "git bisect log ") $status -eq 0
+@test "git bisect run should not match" (not __fzf_complete_git_parse_cmdline "git bisect run ") $status -eq 0
+@test "git bisect replay should not match" (not __fzf_complete_git_parse_cmdline "git bisect replay ") $status -eq 0
+
+# ============================================================
 # No match cases
 # ============================================================
 @test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0

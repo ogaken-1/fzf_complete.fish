@@ -314,6 +314,11 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Fetch Branch> '
     return 0
 
+  # git bisect (start/bad/good/new/old/skip/reset)
+  else if string match -rq '^git bisect (?:start|bad|good|new|old|skip|reset)(?: .*)? $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> '
+    return 0
+
   else
     return 1
   end
