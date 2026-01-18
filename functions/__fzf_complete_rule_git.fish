@@ -303,7 +303,7 @@ function __fzf_complete_git_parse_cmdline
   # git show
   else if string match -rq '^git show(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:pretty|format) $' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Show> '
+    printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Show> '
     return 0
 
   # git revert
@@ -336,7 +336,7 @@ function __fzf_complete_git_parse_cmdline
 
   # git describe
   else if string match -rq '^git describe(?: .*)? $' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> '
+    printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Describe> '
     return 0
 
   # git push remote

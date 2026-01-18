@@ -384,8 +384,8 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 36. git show
 # ============================================================
-@test "git show" (__fzf_complete_git_parse_cmdline "git show ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Show> ')
-@test "git show with --stat" (__fzf_complete_git_parse_cmdline "git show --stat ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Show> ')
+@test "git show" (__fzf_complete_git_parse_cmdline "git show ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Show> ')
+@test "git show with --stat" (__fzf_complete_git_parse_cmdline "git show --stat ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Show> ')
 
 # git show exclusions
 @test "git show --pretty should not match" (not __fzf_complete_git_parse_cmdline "git show --pretty ") $status -eq 0
@@ -449,9 +449,9 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 42. git describe
 # ============================================================
-@test "git describe" (__fzf_complete_git_parse_cmdline "git describe ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
-@test "git describe with --tags" (__fzf_complete_git_parse_cmdline "git describe --tags ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
-@test "git describe with --all" (__fzf_complete_git_parse_cmdline "git describe --all ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
+@test "git describe" (__fzf_complete_git_parse_cmdline "git describe ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Describe> ')
+@test "git describe with --tags" (__fzf_complete_git_parse_cmdline "git describe --tags ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Describe> ')
+@test "git describe with --all" (__fzf_complete_git_parse_cmdline "git describe --all ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Describe> ')
 
 # ============================================================
 # 43. git push
