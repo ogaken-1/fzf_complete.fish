@@ -299,6 +299,21 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Pull Branch> '
     return 0
 
+  # git fetch remote
+  else if string match -rq '^git fetch(?: .*)? $' -- $cmd
+    and not string match -rq '^git fetch(?=.* [^-]) .* ' -- $cmd
+    and not string match -rq ' --(?:upload-pack|refmap|recurse-submodules|submodule-prefix|negotiation-tip|filter) $' -- $cmd
+    and not string match -rq ' -o $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> '
+    return 0
+
+  # git fetch branch (after remote)
+  else if string match -rq '^git fetch(?=.* [^-]) .* $' -- $cmd
+    and not string match -rq ' --(?:upload-pack|refmap|recurse-submodules|submodule-prefix|negotiation-tip|filter) $' -- $cmd
+    and not string match -rq ' -o $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Fetch Branch> '
+    return 0
+
   else
     return 1
   end

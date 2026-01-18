@@ -400,10 +400,20 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git pull origin" (__fzf_complete_git_parse_cmdline "git pull origin ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Pull Branch> ')
 
 # ============================================================
+# 41. git fetch
+# ============================================================
+@test "git fetch" (__fzf_complete_git_parse_cmdline "git fetch ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> ')
+@test "git fetch with options" (__fzf_complete_git_parse_cmdline "git fetch --all ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> ')
+@test "git fetch origin" (__fzf_complete_git_parse_cmdline "git fetch origin ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Fetch Branch> ')
+@test "git fetch origin main" (__fzf_complete_git_parse_cmdline "git fetch origin main ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Fetch Branch> ')
+
+# git fetch exclusions
+@test "git fetch --upload-pack should not match" (not __fzf_complete_git_parse_cmdline "git fetch --upload-pack ") $status -eq 0
+
+# ============================================================
 # No match cases
 # ============================================================
 @test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0
 @test "git without space returns 1" (not __fzf_complete_git_parse_cmdline "git") $status -eq 0
 @test "git status returns 1" (not __fzf_complete_git_parse_cmdline "git status ") $status -eq 0
-@test "git fetch returns 1" (not __fzf_complete_git_parse_cmdline "git fetch ") $status -eq 0
 @test "git clone returns 1" (not __fzf_complete_git_parse_cmdline "git clone ") $status -eq 0
