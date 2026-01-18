@@ -88,6 +88,26 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Checkout Files> '
     return 0
 
+  # git branch --set-upstream-to/-u
+  else if string match -rq '^git branch(?: .*)? (?:--set-upstream-to[= ]|-u )$' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> '
+    return 0
+
+  # git branch -m/-M/-c/-C (rename/copy)
+  else if string match -rq '^git branch (?:-[mMcC])(?: .*)? $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> '
+    return 0
+
+  # git branch --edit-description
+  else if string match -rq '^git branch(?: .*)? --edit-description(?: )?$' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> '
+    return 0
+
+  # git branch --merged/--no-merged/--contains/--no-contains
+  else if string match -rq '^git branch(?: .*)? --(?:no-)?(?:merged|contains) $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Branch Filter> '
+    return 0
+
   # git branch -d/-D
   else if string match -rq '^git branch (?:-d|-D)(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd

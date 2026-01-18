@@ -92,20 +92,49 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git checkout files with --" (__fzf_complete_git_parse_cmdline "git checkout -- ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Checkout Files> ')
 
 # ============================================================
-# 10. git branch -d/-D
+# 10. git branch rename/copy
+# ============================================================
+@test "git branch -m" (__fzf_complete_git_parse_cmdline "git branch -m ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> ')
+@test "git branch -M" (__fzf_complete_git_parse_cmdline "git branch -M ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> ')
+@test "git branch -m old" (__fzf_complete_git_parse_cmdline "git branch -m old ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> ')
+@test "git branch -c" (__fzf_complete_git_parse_cmdline "git branch -c ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> ')
+@test "git branch -C" (__fzf_complete_git_parse_cmdline "git branch -C ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> ')
+
+# ============================================================
+# 11. git branch upstream
+# ============================================================
+@test "git branch -u" (__fzf_complete_git_parse_cmdline "git branch -u ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> ')
+@test "git branch --set-upstream-to=" (__fzf_complete_git_parse_cmdline "git branch --set-upstream-to=") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> ')
+@test "git branch --set-upstream-to " (__fzf_complete_git_parse_cmdline "git branch --set-upstream-to ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> ')
+
+# ============================================================
+# 12. git branch edit-description
+# ============================================================
+@test "git branch --edit-description" (__fzf_complete_git_parse_cmdline "git branch --edit-description ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> ')
+
+# ============================================================
+# 13. git branch filter options
+# ============================================================
+@test "git branch --merged" (__fzf_complete_git_parse_cmdline "git branch --merged ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Branch Filter> ')
+@test "git branch --no-merged" (__fzf_complete_git_parse_cmdline "git branch --no-merged ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Branch Filter> ')
+@test "git branch --contains" (__fzf_complete_git_parse_cmdline "git branch --contains ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Branch Filter> ')
+@test "git branch --no-contains" (__fzf_complete_git_parse_cmdline "git branch --no-contains ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Branch Filter> ')
+
+# ============================================================
+# 14. git branch -d/-D
 # ============================================================
 @test "git branch -d" (__fzf_complete_git_parse_cmdline "git branch -d ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Delete Branch> ')
 @test "git branch -D" (__fzf_complete_git_parse_cmdline "git branch -D ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Delete Branch> ')
 @test "git branch -d with branch" (__fzf_complete_git_parse_cmdline "git branch -d feature ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Delete Branch> ')
 
 # ============================================================
-# 11. git reset branch files
+# 15. git reset branch files
 # ============================================================
 @test "git reset with branch" (__fzf_complete_git_parse_cmdline "git reset HEAD ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Reset Branch Files> ')
 @test "git reset with branch and file" (__fzf_complete_git_parse_cmdline "git reset HEAD file.txt ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Reset Branch Files> ')
 
 # ============================================================
-# 12. git reset (commit completion)
+# 16. git reset (commit completion)
 # ============================================================
 @test "git reset" (__fzf_complete_git_parse_cmdline "git reset ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Reset> ')
 @test "git reset with --soft" (__fzf_complete_git_parse_cmdline "git reset --soft ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Reset> ')
@@ -116,20 +145,20 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git reset --pathspec-from-file should not match" (not __fzf_complete_git_parse_cmdline "git reset --pathspec-from-file ") $status -eq 0
 
 # ============================================================
-# 13. git reset files (fallback with --)
+# 17. git reset files (fallback with --)
 # ============================================================
 @test "git reset files with --" (__fzf_complete_git_parse_cmdline "git reset -- ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Reset Files> ')
 @test "git reset files with -- and options" (__fzf_complete_git_parse_cmdline "git reset --soft -- ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Reset Files> ')
 
 # ============================================================
-# 14. git switch
+# 18. git switch
 # ============================================================
 @test "git switch" (__fzf_complete_git_parse_cmdline "git switch ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
 @test "git switch with -c" (__fzf_complete_git_parse_cmdline "git switch -c ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
 @test "git switch with --create" (__fzf_complete_git_parse_cmdline "git switch --create ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
 
 # ============================================================
-# 15. git restore --source
+# 19. git restore --source
 # ============================================================
 @test "git restore -s" (__fzf_complete_git_parse_cmdline "git restore -s ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Restore Source> ')
 @test "git restore --source=" (__fzf_complete_git_parse_cmdline "git restore --source=") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Restore Source> ')
@@ -139,14 +168,14 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git restore -s with -- falls to restore files" (__fzf_complete_git_parse_cmdline "git restore -s -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Restore Files> ')
 
 # ============================================================
-# 16. git restore source files
+# 20. git restore source files
 # ============================================================
 @test "git restore with source and file" (__fzf_complete_git_parse_cmdline "git restore -s HEAD ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Restore Files> ')
 @test "git restore with --source=ref" (__fzf_complete_git_parse_cmdline "git restore --source=HEAD ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Restore Files> ')
 @test "git restore with --source ref" (__fzf_complete_git_parse_cmdline "git restore --source HEAD ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Restore Files> ')
 
 # ============================================================
-# 16.5 git restore --staged (no source) - staged file completion
+# 20.5 git restore --staged (no source) - staged file completion
 # ============================================================
 @test "git restore --staged" (__fzf_complete_git_parse_cmdline "git restore --staged ") = (printf '%s\t%s\t%s\t%s\n' staged_file true file 'Git Restore Staged> ')
 @test "git restore -S" (__fzf_complete_git_parse_cmdline "git restore -S ") = (printf '%s\t%s\t%s\t%s\n' staged_file true file 'Git Restore Staged> ')
@@ -154,7 +183,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git restore -S with file" (__fzf_complete_git_parse_cmdline "git restore -S file.txt ") = (printf '%s\t%s\t%s\t%s\n' staged_file true file 'Git Restore Staged> ')
 
 # ============================================================
-# 16.6 git restore (no source) - worktree file completion
+# 20.6 git restore (no source) - worktree file completion
 # ============================================================
 @test "git restore" (__fzf_complete_git_parse_cmdline "git restore ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
 @test "git restore --worktree" (__fzf_complete_git_parse_cmdline "git restore --worktree ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Restore> ')
@@ -169,7 +198,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git restore --pathspec-from-file should not match" (not __fzf_complete_git_parse_cmdline "git restore --pathspec-from-file ") $status -eq 0
 
 # ============================================================
-# 17. git rebase branch (with branch argument)
+# 21. git rebase branch (with branch argument)
 # ============================================================
 @test "git rebase with branch" (__fzf_complete_git_parse_cmdline "git rebase main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Rebase Branch> ')
 @test "git rebase with --onto and branch" (__fzf_complete_git_parse_cmdline "git rebase --onto main feature ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Rebase Branch> ')
@@ -179,7 +208,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git rebase --exec arg should not be rebase branch" (__fzf_complete_git_parse_cmdline "git rebase --exec cmd ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Rebase> ')
 
 # ============================================================
-# 18. git rebase (commit completion)
+# 22. git rebase (commit completion)
 # ============================================================
 @test "git rebase" (__fzf_complete_git_parse_cmdline "git rebase ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Rebase> ')
 @test "git rebase with --onto=" (__fzf_complete_git_parse_cmdline "git rebase --onto=") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Rebase> ')
@@ -195,13 +224,13 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git rebase --strategy-option should not match" (not __fzf_complete_git_parse_cmdline "git rebase --strategy-option ") $status -eq 0
 
 # ============================================================
-# 19. git merge --into-name
+# 23. git merge --into-name
 # ============================================================
 @test "git merge --into-name=" (__fzf_complete_git_parse_cmdline "git merge --into-name=") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Merge Branch> ')
 @test "git merge --into-name " (__fzf_complete_git_parse_cmdline "git merge --into-name ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Merge Branch> ')
 
 # ============================================================
-# 20. git merge
+# 24. git merge
 # ============================================================
 @test "git merge" (__fzf_complete_git_parse_cmdline "git merge ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Merge> ')
 @test "git merge with --no-ff" (__fzf_complete_git_parse_cmdline "git merge --no-ff ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Merge> ')
@@ -221,7 +250,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git merge --quit should not match" (not __fzf_complete_git_parse_cmdline "git merge --quit ") $status -eq 0
 
 # ============================================================
-# 21. git stash apply/drop/pop/show
+# 25. git stash apply/drop/pop/show
 # ============================================================
 @test "git stash apply" (__fzf_complete_git_parse_cmdline "git stash apply ") = (printf '%s\t%s\t%s\t%s\n' stash false stash 'Git Stash> ')
 @test "git stash drop" (__fzf_complete_git_parse_cmdline "git stash drop ") = (printf '%s\t%s\t%s\t%s\n' stash false stash 'Git Stash> ')
@@ -230,29 +259,29 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git stash apply with options" (__fzf_complete_git_parse_cmdline "git stash apply --index ") = (printf '%s\t%s\t%s\t%s\n' stash false stash 'Git Stash> ')
 
 # ============================================================
-# 22. git stash branch (with branch name and stash reference)
+# 26. git stash branch (with branch name and stash reference)
 # ============================================================
 @test "git stash branch with name" (__fzf_complete_git_parse_cmdline "git stash branch newbranch ") = (printf '%s\t%s\t%s\t%s\n' stash false stash 'Git Stash> ')
 
 # ============================================================
-# 23. git stash branch (branch completion)
+# 27. git stash branch (branch completion)
 # ============================================================
 @test "git stash branch" (__fzf_complete_git_parse_cmdline "git stash branch ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Stash Branch> ')
 
 # ============================================================
-# 24. git stash push files
+# 28. git stash push files
 # ============================================================
 @test "git stash push" (__fzf_complete_git_parse_cmdline "git stash push ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Push Files> ')
 @test "git stash push with -m" (__fzf_complete_git_parse_cmdline "git stash push -m msg ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Push Files> ')
 
 # ============================================================
-# 25. git log file (with --)
+# 29. git log file (with --)
 # ============================================================
 @test "git log with --" (__fzf_complete_git_parse_cmdline "git log -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Log File> ')
 @test "git log with branch and --" (__fzf_complete_git_parse_cmdline "git log main -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Log File> ')
 
 # ============================================================
-# 26. git log (branch completion)
+# 30. git log (branch completion)
 # ============================================================
 @test "git log" (__fzf_complete_git_parse_cmdline "git log ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Log> ')
 @test "git log with --oneline" (__fzf_complete_git_parse_cmdline "git log --oneline ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Log> ')
@@ -279,7 +308,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git log --max-parents should not match" (not __fzf_complete_git_parse_cmdline "git log --max-parents ") $status -eq 0
 
 # ============================================================
-# 27. git tag list commit
+# 31. git tag list commit
 # ============================================================
 @test "git tag -l --contains" (__fzf_complete_git_parse_cmdline "git tag -l --contains ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
 @test "git tag --list --no-contains" (__fzf_complete_git_parse_cmdline "git tag --list --no-contains ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
@@ -288,14 +317,14 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git tag -l --points-at" (__fzf_complete_git_parse_cmdline "git tag -l --points-at ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
 
 # ============================================================
-# 28. git tag delete
+# 32. git tag delete
 # ============================================================
 @test "git tag -d" (__fzf_complete_git_parse_cmdline "git tag -d ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> ')
 @test "git tag --delete" (__fzf_complete_git_parse_cmdline "git tag --delete ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> ')
 @test "git tag -d with tag" (__fzf_complete_git_parse_cmdline "git tag -d v1.0 ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> ')
 
 # ============================================================
-# 29. git tag (basic)
+# 33. git tag (basic)
 # ============================================================
 @test "git tag" (__fzf_complete_git_parse_cmdline "git tag ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag> ')
 @test "git tag with -a" (__fzf_complete_git_parse_cmdline "git tag -a ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag> ')
@@ -308,19 +337,19 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git tag --format should not match" (not __fzf_complete_git_parse_cmdline "git tag --format ") $status -eq 0
 
 # ============================================================
-# 30. git mv files
+# 34. git mv files
 # ============================================================
 @test "git mv" (__fzf_complete_git_parse_cmdline "git mv ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Mv Files> ')
 @test "git mv with file" (__fzf_complete_git_parse_cmdline "git mv file.txt ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Mv Files> ')
 
 # ============================================================
-# 31. git rm files
+# 35. git rm files
 # ============================================================
 @test "git rm" (__fzf_complete_git_parse_cmdline "git rm ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Rm Files> ')
 @test "git rm with --cached" (__fzf_complete_git_parse_cmdline "git rm --cached ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Rm Files> ')
 
 # ============================================================
-# 32. git show
+# 36. git show
 # ============================================================
 @test "git show" (__fzf_complete_git_parse_cmdline "git show ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Show> ')
 @test "git show with --stat" (__fzf_complete_git_parse_cmdline "git show --stat ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Show> ')
@@ -330,7 +359,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git show --format should not match" (not __fzf_complete_git_parse_cmdline "git show --format ") $status -eq 0
 
 # ============================================================
-# 33. git revert
+# 37. git revert
 # ============================================================
 @test "git revert" (__fzf_complete_git_parse_cmdline "git revert ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_simple 'Git Revert> ')
 @test "git revert with -n" (__fzf_complete_git_parse_cmdline "git revert -n ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_simple 'Git Revert> ')
@@ -343,7 +372,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git revert --quit should not match" (not __fzf_complete_git_parse_cmdline "git revert --quit ") $status -eq 0
 
 # ============================================================
-# 34. git cherry-pick
+# 38. git cherry-pick
 # ============================================================
 @test "git cherry-pick" (__fzf_complete_git_parse_cmdline "git cherry-pick ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> ')
 @test "git cherry-pick with -n" (__fzf_complete_git_parse_cmdline "git cherry-pick -n ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> ')
@@ -356,7 +385,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git cherry-pick --quit should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --quit ") $status -eq 0
 
 # ============================================================
-# 35. git blame
+# 39. git blame
 # ============================================================
 @test "git blame" (__fzf_complete_git_parse_cmdline "git blame ") = (printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> ')
 @test "git blame with -L" (__fzf_complete_git_parse_cmdline "git blame -L 1,10 ") = (printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> ')
@@ -364,7 +393,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git blame with --" (__fzf_complete_git_parse_cmdline "git blame -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> ')
 
 # ============================================================
-# 36. git worktree
+# 40. git worktree
 # ============================================================
 @test "git worktree add with path" (__fzf_complete_git_parse_cmdline "git worktree add ../hotfix ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Worktree> ')
 @test "git worktree add -b with path" (__fzf_complete_git_parse_cmdline "git worktree add -b feature ../feature ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Worktree> ')
@@ -374,7 +403,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git worktree prune should not match" (not __fzf_complete_git_parse_cmdline "git worktree prune ") $status -eq 0
 
 # ============================================================
-# 37. git format-patch
+# 41. git format-patch
 # ============================================================
 @test "git format-patch" (__fzf_complete_git_parse_cmdline "git format-patch ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch> ')
 @test "git format-patch with -o" (__fzf_complete_git_parse_cmdline "git format-patch -o patches ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch> ')
@@ -385,14 +414,14 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git format-patch --cc should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --cc ") $status -eq 0
 
 # ============================================================
-# 38. git describe
+# 42. git describe
 # ============================================================
 @test "git describe" (__fzf_complete_git_parse_cmdline "git describe ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
 @test "git describe with --tags" (__fzf_complete_git_parse_cmdline "git describe --tags ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
 @test "git describe with --all" (__fzf_complete_git_parse_cmdline "git describe --all ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
 
 # ============================================================
-# 39. git push
+# 43. git push
 # ============================================================
 @test "git push" (__fzf_complete_git_parse_cmdline "git push ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Push Remote> ')
 @test "git push with options" (__fzf_complete_git_parse_cmdline "git push -f ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Push Remote> ')
@@ -404,14 +433,14 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git push -o should not match" (not __fzf_complete_git_parse_cmdline "git push -o ") $status -eq 0
 
 # ============================================================
-# 40. git pull
+# 44. git pull
 # ============================================================
 @test "git pull" (__fzf_complete_git_parse_cmdline "git pull ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Pull Remote> ')
 @test "git pull with options" (__fzf_complete_git_parse_cmdline "git pull --rebase ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Pull Remote> ')
 @test "git pull origin" (__fzf_complete_git_parse_cmdline "git pull origin ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Pull Branch> ')
 
 # ============================================================
-# 41. git fetch
+# 45. git fetch
 # ============================================================
 @test "git fetch" (__fzf_complete_git_parse_cmdline "git fetch ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> ')
 @test "git fetch with options" (__fzf_complete_git_parse_cmdline "git fetch --all ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> ')
@@ -422,7 +451,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git fetch --upload-pack should not match" (not __fzf_complete_git_parse_cmdline "git fetch --upload-pack ") $status -eq 0
 
 # ============================================================
-# 42. git bisect
+# 46. git bisect
 # ============================================================
 @test "git bisect start" (__fzf_complete_git_parse_cmdline "git bisect start ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
 @test "git bisect start with bad" (__fzf_complete_git_parse_cmdline "git bisect start HEAD ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
