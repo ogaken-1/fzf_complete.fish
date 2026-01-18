@@ -230,6 +230,16 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Push Files> '
     return 0
 
+  # git stash save files (deprecated but still used)
+  else if string match -rq '^git stash save(?: .*)? $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Save Files> '
+    return 0
+
+  # git stash store
+  else if string match -rq '^git stash store(?: .*)? $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Stash Store> '
+    return 0
+
   # git log file
   else if string match -rq '^git log(?=.* -- ) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Log File> '

@@ -283,6 +283,17 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git stash push with -m" (__fzf_complete_git_parse_cmdline "git stash push -m msg ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Push Files> ')
 
 # ============================================================
+# 28.5 git stash save (deprecated)
+# ============================================================
+@test "git stash save" (__fzf_complete_git_parse_cmdline "git stash save ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Save Files> ')
+@test "git stash save with message" (__fzf_complete_git_parse_cmdline "git stash save 'message' ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Save Files> ')
+
+# ============================================================
+# 28.6 git stash store
+# ============================================================
+@test "git stash store" (__fzf_complete_git_parse_cmdline "git stash store ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Stash Store> ')
+
+# ============================================================
 # 29. git log file (with --)
 # ============================================================
 @test "git log with --" (__fzf_complete_git_parse_cmdline "git log -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Log File> ')
