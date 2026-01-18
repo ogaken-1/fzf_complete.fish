@@ -374,6 +374,13 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git format-patch --cc should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --cc ") $status -eq 0
 
 # ============================================================
+# 38. git describe
+# ============================================================
+@test "git describe" (__fzf_complete_git_parse_cmdline "git describe ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
+@test "git describe with --tags" (__fzf_complete_git_parse_cmdline "git describe --tags ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
+@test "git describe with --all" (__fzf_complete_git_parse_cmdline "git describe --all ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Describe> ')
+
+# ============================================================
 # No match cases
 # ============================================================
 @test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0
