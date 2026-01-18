@@ -323,6 +323,10 @@ function __fzf_complete_git_build_config
       set source $FZF_COMPLETE_GIT_STASH_SOURCE
       set -a opts $FZF_COMPLETE_GIT_PRESET_STASH
       set transformer __fzf_complete_git_stash_to_arg
+
+    case remote
+      set source $FZF_COMPLETE_GIT_REMOTE_SOURCE
+      set -a opts $FZF_COMPLETE_GIT_PRESET_REMOTE
   end
 
   # Set opts based on bind_type for ref types (branch, commit, tag)

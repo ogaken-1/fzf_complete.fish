@@ -24,6 +24,7 @@ set -g FZF_COMPLETE_GIT_BRANCH_SOURCE "git for-each-ref refs/heads refs/remotes 
 set -g FZF_COMPLETE_GIT_TAG_SOURCE "git for-each-ref refs/tags --color=always --format='%(color:green)[tag] $FZF_COMPLETE_GIT_REF_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_REFLOG_SOURCE "git reflog --decorate --color=always --format='%C(green)[reflog] $FZF_COMPLETE_GIT_LOG_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_STASH_SOURCE "git stash list --color=always --format='$FZF_COMPLETE_GIT_STASH_FORMAT' | column -t -s (printf '\\t')"
+set -g FZF_COMPLETE_GIT_REMOTE_SOURCE 'git remote'
 
 # === Preview Commands ===
 set -g FZF_COMPLETE_GIT_STATUS_PREVIEW "! git diff --exit-code --color=always -- {-1} || ! git diff --exit-code --cached --color=always -- {-1} 2>/dev/null || $FZF_COMPLETE_GIT_TREE {-1} 2>/dev/null"
@@ -91,6 +92,9 @@ set -g FZF_COMPLETE_GIT_PRESET_LOG_SIMPLE \
 set -g FZF_COMPLETE_GIT_PRESET_STASH \
   --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND \
   --preview=$FZF_COMPLETE_GIT_STASH_PREVIEW
+
+set -g FZF_COMPLETE_GIT_PRESET_REMOTE \
+  --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND
 
 if [ -z "$FZF_COMPLETE_NO_DEFAULT_BINDING" ]
   bind tab fzf_complete

@@ -151,3 +151,9 @@ end
   set result (_parse_build_config stash true stash "Test> ")
   string match -q "*opts:has_multi*" -- $result
 ) $status -eq 0
+
+# ============================================================
+# remote
+# ============================================================
+@test "remote: source is remote source" (__fzf_complete_git_build_config remote false file 'test> ' | string split0)[1] = $FZF_COMPLETE_GIT_REMOTE_SOURCE
+@test "remote: transformer is empty" (__fzf_complete_git_build_config remote false file 'test> ' | string split0)[2] = ''
