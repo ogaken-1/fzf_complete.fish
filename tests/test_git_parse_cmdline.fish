@@ -353,6 +353,16 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git blame with --" (__fzf_complete_git_parse_cmdline "git blame -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> ')
 
 # ============================================================
+# 36. git worktree
+# ============================================================
+@test "git worktree add with path" (__fzf_complete_git_parse_cmdline "git worktree add ../hotfix ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Worktree> ')
+@test "git worktree add -b with path" (__fzf_complete_git_parse_cmdline "git worktree add -b feature ../feature ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Worktree> ')
+
+# git worktree subcommands without completion
+@test "git worktree list should not match" (not __fzf_complete_git_parse_cmdline "git worktree list ") $status -eq 0
+@test "git worktree prune should not match" (not __fzf_complete_git_parse_cmdline "git worktree prune ") $status -eq 0
+
+# ============================================================
 # No match cases
 # ============================================================
 @test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0
