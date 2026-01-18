@@ -507,6 +507,9 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git bisect run should not match" (not __fzf_complete_git_parse_cmdline "git bisect run ") $status -eq 0
 @test "git bisect replay should not match" (not __fzf_complete_git_parse_cmdline "git bisect replay ") $status -eq 0
 
+# git bisect start with -- (pathspec)
+@test "git bisect start with --" (__fzf_complete_git_parse_cmdline "git bisect start HEAD~10 HEAD -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Bisect Files> ')
+
 # ============================================================
 # No match cases
 # ============================================================
