@@ -1,17 +1,20 @@
 # Test __fzf_complete_git_build_config output format and values
 # The function outputs null-separated: source, transformer, then opts
+# Arguments: source_type multi bind_type prompt
 
 source (status dirname)/../functions/__fzf_complete_rule_git.fish
 source (status dirname)/../conf.d/fzf_complete.fish
 
 # Helper function to parse build_config output
+# Arguments: source_type multi bind_type prompt
 function _parse_build_config
-  set -l type $argv[1]
-  set -l preset_variant $argv[2]
-  set -l prompt $argv[3]
+  set -l source_type $argv[1]
+  set -l multi $argv[2]
+  set -l bind_type $argv[3]
+  set -l prompt $argv[4]
 
   # Parse null-separated output
-  set -l output (__fzf_complete_git_build_config $type $preset_variant $prompt | string split0)
+  set -l output (__fzf_complete_git_build_config $source_type $multi $bind_type $prompt | string split0)
 
   # First is source, second is transformer, rest are opts
   set -l source $output[1]
@@ -39,106 +42,112 @@ end
 
 # === Test status_file type ===
 @test "status_file: source is status source" (
-  set result (_parse_build_config status_file normal "Test> ")
+  set result (_parse_build_config status_file true file "Test> ")
   string match -q "source:*status*" -- $result
 ) $status -eq 0
 
 @test "status_file: transformer is status_to_arg" (
-  set result (_parse_build_config status_file normal "Test> ")
+  set result (_parse_build_config status_file true file "Test> ")
   string match -q "*transformer:__fzf_complete_git_status_to_arg*" -- $result
 ) $status -eq 0
 
 @test "status_file: opts has prompt" (
-  set result (_parse_build_config status_file normal "Test> ")
+  set result (_parse_build_config status_file true file "Test> ")
   string match -q "*opts:has_prompt*" -- $result
 ) $status -eq 0
 
 # === Test branch type (singular - no --multi) ===
 @test "branch: source is branch source" (
-  set result (_parse_build_config branch normal "Test> ")
+  set result (_parse_build_config branch false ref_full "Test> ")
   string match -q "source:*for-each-ref*" -- $result
 ) $status -eq 0
 
 @test "branch: transformer is ref_to_arg" (
-  set result (_parse_build_config branch normal "Test> ")
+  set result (_parse_build_config branch false ref_full "Test> ")
   string match -q "*transformer:__fzf_complete_git_ref_to_arg*" -- $result
 ) $status -eq 0
 
-@test "branch: opts does not have multi" (
-  set result (_parse_build_config branch normal "Test> ")
+@test "branch: opts does not have multi when multi=false" (
+  set result (_parse_build_config branch false ref_full "Test> ")
   string match -q "*opts:no_multi*" -- $result
 ) $status -eq 0
 
-# === Test branches type (plural - has --multi) ===
-@test "branches: opts has multi" (
-  set result (_parse_build_config branches normal "Test> ")
+# === Test branch type with multi=true ===
+@test "branch with multi=true: opts has multi" (
+  set result (_parse_build_config branch true ref_full "Test> ")
   string match -q "*opts:has_multi*" -- $result
 ) $status -eq 0
 
 # === Test commit type ===
 @test "commit: source is log source" (
-  set result (_parse_build_config commit normal "Test> ")
+  set result (_parse_build_config commit false ref_full "Test> ")
   string match -q "source:*git log*" -- $result
 ) $status -eq 0
 
 @test "commit: transformer is ref_to_arg" (
-  set result (_parse_build_config commit normal "Test> ")
+  set result (_parse_build_config commit false ref_full "Test> ")
   string match -q "*transformer:__fzf_complete_git_ref_to_arg*" -- $result
 ) $status -eq 0
 
 # === Test ls_file type ===
 @test "ls_file: source is ls-files" (
-  set result (_parse_build_config ls_file normal "Test> ")
+  set result (_parse_build_config ls_file true file "Test> ")
   string match -q "source:*ls-files*" -- $result
 ) $status -eq 0
 
 @test "ls_file: transformer is empty" (
-  set result (_parse_build_config ls_file normal "Test> ")
+  set result (_parse_build_config ls_file true file "Test> ")
   string match -q "*transformer:EMPTY*" -- $result
 ) $status -eq 0
 
 # === Test tag type ===
 @test "tag: source is tag source" (
-  set result (_parse_build_config tag normal "Test> ")
+  set result (_parse_build_config tag false ref_simple "Test> ")
   string match -q "source:*refs/tags*" -- $result
 ) $status -eq 0
 
 @test "tag: transformer is ref_to_arg" (
-  set result (_parse_build_config tag normal "Test> ")
+  set result (_parse_build_config tag false ref_simple "Test> ")
   string match -q "*transformer:__fzf_complete_git_ref_to_arg*" -- $result
 ) $status -eq 0
 
 # === Test stash type ===
 @test "stash: source is stash source" (
-  set result (_parse_build_config stash normal "Test> ")
+  set result (_parse_build_config stash false stash "Test> ")
   string match -q "source:*stash list*" -- $result
 ) $status -eq 0
 
 @test "stash: transformer is stash_to_arg" (
-  set result (_parse_build_config stash normal "Test> ")
+  set result (_parse_build_config stash false stash "Test> ")
   string match -q "*transformer:__fzf_complete_git_stash_to_arg*" -- $result
 ) $status -eq 0
 
-# === Test branch with no_header preset_variant ===
-@test "branch no_header: source is still branch source" (
-  set result (_parse_build_config branch no_header "Test> ")
+# === Test branch with ref_simple bind_type (no header) ===
+@test "branch ref_simple: source is still branch source" (
+  set result (_parse_build_config branch false ref_simple "Test> ")
   string match -q "source:*for-each-ref*" -- $result
 ) $status -eq 0
 
-# === Test commits (plural) ===
-@test "commits: has multi option" (
-  set result (_parse_build_config commits normal "Test> ")
+# === Test commit with ref_simple bind_type ===
+@test "commit ref_simple: uses LOG_SIMPLE preset" (
+  set result (_parse_build_config commit false ref_simple "Test> ")
+  string match -q "source:*git log*" -- $result
+) $status -eq 0
+
+# === Test commit with multi=true ===
+@test "commit with multi=true: has multi option" (
+  set result (_parse_build_config commit true ref_full "Test> ")
   string match -q "*opts:has_multi*" -- $result
 ) $status -eq 0
 
-# === Test tags (plural) ===
-@test "tags: has multi option" (
-  set result (_parse_build_config tags normal "Test> ")
+# === Test tag with multi=true ===
+@test "tag with multi=true: has multi option" (
+  set result (_parse_build_config tag true ref_simple "Test> ")
   string match -q "*opts:has_multi*" -- $result
 ) $status -eq 0
 
-# === Test stashes (plural) ===
-@test "stashes: has multi option" (
-  set result (_parse_build_config stashes normal "Test> ")
+# === Test stash with multi=true ===
+@test "stash with multi=true: has multi option" (
+  set result (_parse_build_config stash true stash "Test> ")
   string match -q "*opts:has_multi*" -- $result
 ) $status -eq 0
