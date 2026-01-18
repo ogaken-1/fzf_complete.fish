@@ -36,6 +36,12 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Add Files> '
     return 0
 
+  # git diff --cached/--merge-base commit
+  else if string match -rq '^git diff(?: .*)? (?:--cached|--staged|--merge-base) $' -- $cmd
+    and not string match -rq ' -- ' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Diff Commit> '
+    return 0
+
   # git diff files (with --)
   else if string match -rq '^git diff(?=.* -- ) .* $' -- $cmd
     and not string match -rq '^git diff.* [^-].* -- ' -- $cmd

@@ -27,7 +27,13 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # 4. git diff (basic - branches completion)
 # ============================================================
 @test "git diff" (__fzf_complete_git_parse_cmdline "git diff ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_full 'Git Diff> ')
-@test "git diff with options" (__fzf_complete_git_parse_cmdline "git diff --staged ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_full 'Git Diff> ')
+
+# ============================================================
+# 4.5. git diff --cached/--merge-base commit
+# ============================================================
+@test "git diff --cached commit" (__fzf_complete_git_parse_cmdline "git diff --cached ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Diff Commit> ')
+@test "git diff --staged commit" (__fzf_complete_git_parse_cmdline "git diff --staged ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Diff Commit> ')
+@test "git diff --merge-base commit" (__fzf_complete_git_parse_cmdline "git diff --merge-base ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Diff Commit> ')
 
 # ============================================================
 # 5. git commit -c/-C/--fixup/--squash
