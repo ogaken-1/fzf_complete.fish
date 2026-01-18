@@ -328,6 +328,11 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Worktree> '
     return 0
 
+  # git format-patch --interdiff/--range-diff
+  else if string match -rq '^git format-patch(?: .*)? --(?:interdiff|range-diff)[= ]$' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch Diff> '
+    return 0
+
   # git format-patch
   else if string match -rq '^git format-patch(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:in-reply-to|to|cc) $' -- $cmd

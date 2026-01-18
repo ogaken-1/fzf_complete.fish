@@ -446,6 +446,10 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git format-patch --to should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --to ") $status -eq 0
 @test "git format-patch --cc should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --cc ") $status -eq 0
 
+# git format-patch --interdiff/--range-diff
+@test "git format-patch --interdiff=" (__fzf_complete_git_parse_cmdline "git format-patch --interdiff=") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch Diff> ')
+@test "git format-patch --range-diff=" (__fzf_complete_git_parse_cmdline "git format-patch --range-diff=") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch Diff> ')
+
 # ============================================================
 # 42. git describe
 # ============================================================
