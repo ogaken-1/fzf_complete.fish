@@ -470,12 +470,13 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # 45. git fetch
 # ============================================================
 @test "git fetch" (__fzf_complete_git_parse_cmdline "git fetch ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> ')
-@test "git fetch with options" (__fzf_complete_git_parse_cmdline "git fetch --all ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> ')
+@test "git fetch with options" (__fzf_complete_git_parse_cmdline "git fetch --prune ") = (printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> ')
 @test "git fetch origin" (__fzf_complete_git_parse_cmdline "git fetch origin ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Fetch Branch> ')
 @test "git fetch origin main" (__fzf_complete_git_parse_cmdline "git fetch origin main ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Fetch Branch> ')
 
 # git fetch exclusions
 @test "git fetch --upload-pack should not match" (not __fzf_complete_git_parse_cmdline "git fetch --upload-pack ") $status -eq 0
+@test "git fetch --all should not match" (not __fzf_complete_git_parse_cmdline "git fetch --all ") $status -eq 0
 
 # ============================================================
 # 46. git bisect
