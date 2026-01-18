@@ -259,9 +259,22 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> '
     return 0
 
+  # git tag verify
+  else if string match -rq '^git tag(?: .*)? -v $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Verify> '
+    return 0
+
   # git tag delete
   else if string match -rq '^git tag(?=.* (?:-d|--delete) )(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> '
+    return 0
+
+  # git tag create with commit (second positional argument)
+  else if string match -rq '^git tag(?=.* [^-])(?: .*)? [^-][^ ]* $' -- $cmd
+    and not string match -rq '^git tag(?=.* (?:-l|--list|-d|--delete|-v) )' -- $cmd
+    and not string match -rq ' -[umF] $' -- $cmd
+    and not string match -rq ' --(?:local-user|format) $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag Commit> '
     return 0
 
   # git tag

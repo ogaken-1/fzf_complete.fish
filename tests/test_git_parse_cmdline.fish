@@ -355,6 +355,14 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git tag --local-user should not match" (not __fzf_complete_git_parse_cmdline "git tag --local-user ") $status -eq 0
 @test "git tag --format should not match" (not __fzf_complete_git_parse_cmdline "git tag --format ") $status -eq 0
 
+# git tag verify
+@test "git tag -v" (__fzf_complete_git_parse_cmdline "git tag -v ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Verify> ')
+
+# git tag create with commit
+@test "git tag with tagname" (__fzf_complete_git_parse_cmdline "git tag v1.0 ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag Commit> ')
+@test "git tag -a with tagname" (__fzf_complete_git_parse_cmdline "git tag -a v1.0 ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag Commit> ')
+@test "git tag -s with tagname" (__fzf_complete_git_parse_cmdline "git tag -s v1.0 ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag Commit> ')
+
 # ============================================================
 # 34. git mv files
 # ============================================================
