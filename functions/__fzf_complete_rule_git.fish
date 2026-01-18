@@ -252,6 +252,11 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> '
     return 0
 
+  # git blame
+  else if string match -rq '^git blame(?: .*)? $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> '
+    return 0
+
   else
     return 1
   end

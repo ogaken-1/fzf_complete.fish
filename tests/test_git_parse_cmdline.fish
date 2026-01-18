@@ -345,6 +345,14 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git cherry-pick --quit should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --quit ") $status -eq 0
 
 # ============================================================
+# 35. git blame
+# ============================================================
+@test "git blame" (__fzf_complete_git_parse_cmdline "git blame ") = (printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> ')
+@test "git blame with -L" (__fzf_complete_git_parse_cmdline "git blame -L 1,10 ") = (printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> ')
+@test "git blame with rev" (__fzf_complete_git_parse_cmdline "git blame HEAD ") = (printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> ')
+@test "git blame with --" (__fzf_complete_git_parse_cmdline "git blame -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> ')
+
+# ============================================================
 # No match cases
 # ============================================================
 @test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0
