@@ -363,6 +363,17 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git worktree prune should not match" (not __fzf_complete_git_parse_cmdline "git worktree prune ") $status -eq 0
 
 # ============================================================
+# 37. git format-patch
+# ============================================================
+@test "git format-patch" (__fzf_complete_git_parse_cmdline "git format-patch ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch> ')
+@test "git format-patch with -o" (__fzf_complete_git_parse_cmdline "git format-patch -o patches ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch> ')
+
+# git format-patch exclusions
+@test "git format-patch --in-reply-to should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --in-reply-to ") $status -eq 0
+@test "git format-patch --to should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --to ") $status -eq 0
+@test "git format-patch --cc should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --cc ") $status -eq 0
+
+# ============================================================
 # No match cases
 # ============================================================
 @test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0
