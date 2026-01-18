@@ -18,15 +18,18 @@ set -g FZF_COMPLETE_GIT_STASH_FORMAT '%C(magenta)%gd%x09%C(yellow)%cr%x09%C(auto
 # === Source Commands ===
 set -g FZF_COMPLETE_GIT_STATUS_SOURCE 'git -c color.status=always status --short'
 set -g FZF_COMPLETE_GIT_LS_FILES_SOURCE 'git ls-files -z'
+set -g FZF_COMPLETE_GIT_STAGED_SOURCE 'git diff --cached --name-only --relative -z'
 set -g FZF_COMPLETE_GIT_LOG_SOURCE "git log --decorate --color=always --format='%C(green)[commit] $FZF_COMPLETE_GIT_LOG_FORMAT' | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_BRANCH_SOURCE "git for-each-ref refs/heads refs/remotes --color=always --format='%(color:green)[branch] $FZF_COMPLETE_GIT_REF_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_TAG_SOURCE "git for-each-ref refs/tags --color=always --format='%(color:green)[tag] $FZF_COMPLETE_GIT_REF_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_REFLOG_SOURCE "git reflog --decorate --color=always --format='%C(green)[reflog] $FZF_COMPLETE_GIT_LOG_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_STASH_SOURCE "git stash list --color=always --format='$FZF_COMPLETE_GIT_STASH_FORMAT' | column -t -s (printf '\\t')"
+set -g FZF_COMPLETE_GIT_REMOTE_SOURCE 'git remote'
 
 # === Preview Commands ===
 set -g FZF_COMPLETE_GIT_STATUS_PREVIEW "! git diff --exit-code --color=always -- {-1} || ! git diff --exit-code --cached --color=always -- {-1} 2>/dev/null || $FZF_COMPLETE_GIT_TREE {-1} 2>/dev/null"
 set -g FZF_COMPLETE_GIT_LS_FILES_PREVIEW "$FZF_COMPLETE_GIT_CAT {}"
+set -g FZF_COMPLETE_GIT_STAGED_PREVIEW 'git diff --cached --color=always -- {}'
 set -g FZF_COMPLETE_GIT_LOG_PREVIEW 'git show --color=always {2}'
 set -g FZF_COMPLETE_GIT_STASH_PREVIEW 'git show --color=always {1}'
 set -g FZF_COMPLETE_GIT_REF_PREVIEW "
@@ -50,7 +53,8 @@ set -g FZF_COMPLETE_COMMON_OPTS \
   --expect=alt-enter \
   --height='80%' \
   --print0 \
-  --no-separator
+  --no-separator \
+  --select-1
 
 # === Headers ===
 set -g FZF_COMPLETE_GIT_REF_HEADER_FULL 'C-b: branch, C-c: commit, C-t: tag, C-r: reflog'
@@ -66,6 +70,11 @@ set -g FZF_COMPLETE_GIT_PRESET_LS_FILES \
   --multi --read0 \
   --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND \
   --preview=$FZF_COMPLETE_GIT_LS_FILES_PREVIEW
+
+set -g FZF_COMPLETE_GIT_PRESET_STAGED \
+  --multi --read0 \
+  --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND \
+  --preview=$FZF_COMPLETE_GIT_STAGED_PREVIEW
 
 set -g FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER \
   --bind=$FZF_COMPLETE_GIT_REF_BIND \
@@ -84,6 +93,9 @@ set -g FZF_COMPLETE_GIT_PRESET_LOG_SIMPLE \
 set -g FZF_COMPLETE_GIT_PRESET_STASH \
   --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND \
   --preview=$FZF_COMPLETE_GIT_STASH_PREVIEW
+
+set -g FZF_COMPLETE_GIT_PRESET_REMOTE \
+  --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND
 
 if [ -z "$FZF_COMPLETE_NO_DEFAULT_BINDING" ]
   bind tab fzf_complete
