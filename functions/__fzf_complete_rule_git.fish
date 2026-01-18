@@ -288,6 +288,17 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Push Branch> '
     return 0
 
+  # git pull remote
+  else if string match -rq '^git pull(?: .*)? $' -- $cmd
+    and not string match -rq '^git pull(?=.* [^-]) .* ' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' remote false file 'Git Pull Remote> '
+    return 0
+
+  # git pull branch (after remote)
+  else if string match -rq '^git pull(?=.* [^-]) .* $' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Pull Branch> '
+    return 0
+
   else
     return 1
   end
