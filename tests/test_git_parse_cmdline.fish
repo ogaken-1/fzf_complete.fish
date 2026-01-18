@@ -215,6 +215,11 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git merge --strategy should not match" (not __fzf_complete_git_parse_cmdline "git merge --strategy ") $status -eq 0
 @test "git merge --strategy-option should not match" (not __fzf_complete_git_parse_cmdline "git merge --strategy-option ") $status -eq 0
 
+# git merge control flow exclusions
+@test "git merge --continue should not match" (not __fzf_complete_git_parse_cmdline "git merge --continue ") $status -eq 0
+@test "git merge --abort should not match" (not __fzf_complete_git_parse_cmdline "git merge --abort ") $status -eq 0
+@test "git merge --quit should not match" (not __fzf_complete_git_parse_cmdline "git merge --quit ") $status -eq 0
+
 # ============================================================
 # 21. git stash apply/drop/pop/show
 # ============================================================
