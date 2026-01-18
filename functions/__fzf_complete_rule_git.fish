@@ -244,7 +244,8 @@ function __fzf_complete_git_parse_cmdline
 
   # git revert
   else if string match -rq '^git revert(?: .*)? $' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Revert> '
+    and not string match -rq ' --(?:continue|skip|abort|quit)' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' commit true ref_simple 'Git Revert> '
     return 0
 
   # git cherry-pick

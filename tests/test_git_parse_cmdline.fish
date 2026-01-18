@@ -332,9 +332,15 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 33. git revert
 # ============================================================
-@test "git revert" (__fzf_complete_git_parse_cmdline "git revert ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Revert> ')
-@test "git revert with -n" (__fzf_complete_git_parse_cmdline "git revert -n ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Revert> ')
-@test "git revert with --no-commit" (__fzf_complete_git_parse_cmdline "git revert --no-commit ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Revert> ')
+@test "git revert" (__fzf_complete_git_parse_cmdline "git revert ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_simple 'Git Revert> ')
+@test "git revert with -n" (__fzf_complete_git_parse_cmdline "git revert -n ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_simple 'Git Revert> ')
+@test "git revert with --no-commit" (__fzf_complete_git_parse_cmdline "git revert --no-commit ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_simple 'Git Revert> ')
+
+# git revert control flow exclusions
+@test "git revert --continue should not match" (not __fzf_complete_git_parse_cmdline "git revert --continue ") $status -eq 0
+@test "git revert --skip should not match" (not __fzf_complete_git_parse_cmdline "git revert --skip ") $status -eq 0
+@test "git revert --abort should not match" (not __fzf_complete_git_parse_cmdline "git revert --abort ") $status -eq 0
+@test "git revert --quit should not match" (not __fzf_complete_git_parse_cmdline "git revert --quit ") $status -eq 0
 
 # ============================================================
 # 34. git cherry-pick
