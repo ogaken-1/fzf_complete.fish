@@ -61,12 +61,12 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git commit with --amend" (__fzf_complete_git_parse_cmdline "git commit --amend ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Commit Files> ')
 
 # git commit files exclusions
-@test "git commit -m should not match" (not __fzf_complete_git_parse_cmdline "git commit -m ") $status -eq 0
-@test "git commit -F should not match" (not __fzf_complete_git_parse_cmdline "git commit -F ") $status -eq 0
-@test "git commit --author should not match" (not __fzf_complete_git_parse_cmdline "git commit --author ") $status -eq 0
-@test "git commit --date should not match" (not __fzf_complete_git_parse_cmdline "git commit --date ") $status -eq 0
-@test "git commit --template should not match" (not __fzf_complete_git_parse_cmdline "git commit --template ") $status -eq 0
-@test "git commit --trailer should not match" (not __fzf_complete_git_parse_cmdline "git commit --trailer ") $status -eq 0
+@test "git commit -m should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit -m ")) $status -eq 0
+@test "git commit -F should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit -F ")) $status -eq 0
+@test "git commit --author should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit --author ")) $status -eq 0
+@test "git commit --date should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit --date ")) $status -eq 0
+@test "git commit --template should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit --template ")) $status -eq 0
+@test "git commit --trailer should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit --trailer ")) $status -eq 0
 
 # ============================================================
 # 7. git checkout branch files
@@ -91,8 +91,8 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 
 # git checkout exclusions
 @test "git checkout with -- should not match branch" (__fzf_complete_git_parse_cmdline "git checkout -- ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Checkout Files> ')
-@test "git checkout --conflict should not match" (not __fzf_complete_git_parse_cmdline "git checkout --conflict ") $status -eq 0
-@test "git checkout --pathspec-from-file should not match" (not __fzf_complete_git_parse_cmdline "git checkout --pathspec-from-file ") $status -eq 0
+@test "git checkout --conflict should not match" (test -z (__fzf_complete_git_parse_cmdline "git checkout --conflict ")) $status -eq 0
+@test "git checkout --pathspec-from-file should not match" (test -z (__fzf_complete_git_parse_cmdline "git checkout --pathspec-from-file ")) $status -eq 0
 
 # ============================================================
 # 9. git checkout files
@@ -150,7 +150,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git reset with --mixed" (__fzf_complete_git_parse_cmdline "git reset --mixed ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Reset> ')
 
 # git reset exclusions
-@test "git reset --pathspec-from-file should not match" (not __fzf_complete_git_parse_cmdline "git reset --pathspec-from-file ") $status -eq 0
+@test "git reset --pathspec-from-file should not match" (test -z (__fzf_complete_git_parse_cmdline "git reset --pathspec-from-file ")) $status -eq 0
 
 # ============================================================
 # 17. git reset files (fallback with --)
@@ -209,7 +209,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git restore with file" (__fzf_complete_git_parse_cmdline "git restore file.txt ") = (printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> ')
 
 # git restore exclusions
-@test "git restore --pathspec-from-file should not match" (not __fzf_complete_git_parse_cmdline "git restore --pathspec-from-file ") $status -eq 0
+@test "git restore --pathspec-from-file should not match" (test -z (__fzf_complete_git_parse_cmdline "git restore --pathspec-from-file ")) $status -eq 0
 
 # ============================================================
 # 21. git rebase branch (with branch argument)
@@ -230,12 +230,12 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git rebase with -i" (__fzf_complete_git_parse_cmdline "git rebase -i ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Rebase> ')
 
 # git rebase exclusions
-@test "git rebase -x should not match" (not __fzf_complete_git_parse_cmdline "git rebase -x ") $status -eq 0
-@test "git rebase -s should not match" (not __fzf_complete_git_parse_cmdline "git rebase -s ") $status -eq 0
-@test "git rebase -X should not match" (not __fzf_complete_git_parse_cmdline "git rebase -X ") $status -eq 0
-@test "git rebase --exec should not match" (not __fzf_complete_git_parse_cmdline "git rebase --exec ") $status -eq 0
-@test "git rebase --strategy should not match" (not __fzf_complete_git_parse_cmdline "git rebase --strategy ") $status -eq 0
-@test "git rebase --strategy-option should not match" (not __fzf_complete_git_parse_cmdline "git rebase --strategy-option ") $status -eq 0
+@test "git rebase -x should not match" (test -z (__fzf_complete_git_parse_cmdline "git rebase -x ")) $status -eq 0
+@test "git rebase -s should not match" (test -z (__fzf_complete_git_parse_cmdline "git rebase -s ")) $status -eq 0
+@test "git rebase -X should not match" (test -z (__fzf_complete_git_parse_cmdline "git rebase -X ")) $status -eq 0
+@test "git rebase --exec should not match" (test -z (__fzf_complete_git_parse_cmdline "git rebase --exec ")) $status -eq 0
+@test "git rebase --strategy should not match" (test -z (__fzf_complete_git_parse_cmdline "git rebase --strategy ")) $status -eq 0
+@test "git rebase --strategy-option should not match" (test -z (__fzf_complete_git_parse_cmdline "git rebase --strategy-option ")) $status -eq 0
 
 # ============================================================
 # 23. git merge --into-name
@@ -250,18 +250,18 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git merge with --no-ff" (__fzf_complete_git_parse_cmdline "git merge --no-ff ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Merge> ')
 
 # git merge exclusions
-@test "git merge -m should not match" (not __fzf_complete_git_parse_cmdline "git merge -m ") $status -eq 0
-@test "git merge -F should not match" (not __fzf_complete_git_parse_cmdline "git merge -F ") $status -eq 0
-@test "git merge -s should not match" (not __fzf_complete_git_parse_cmdline "git merge -s ") $status -eq 0
-@test "git merge -X should not match" (not __fzf_complete_git_parse_cmdline "git merge -X ") $status -eq 0
-@test "git merge --file should not match" (not __fzf_complete_git_parse_cmdline "git merge --file ") $status -eq 0
-@test "git merge --strategy should not match" (not __fzf_complete_git_parse_cmdline "git merge --strategy ") $status -eq 0
-@test "git merge --strategy-option should not match" (not __fzf_complete_git_parse_cmdline "git merge --strategy-option ") $status -eq 0
+@test "git merge -m should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge -m ")) $status -eq 0
+@test "git merge -F should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge -F ")) $status -eq 0
+@test "git merge -s should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge -s ")) $status -eq 0
+@test "git merge -X should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge -X ")) $status -eq 0
+@test "git merge --file should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge --file ")) $status -eq 0
+@test "git merge --strategy should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge --strategy ")) $status -eq 0
+@test "git merge --strategy-option should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge --strategy-option ")) $status -eq 0
 
 # git merge control flow exclusions
-@test "git merge --continue should not match" (not __fzf_complete_git_parse_cmdline "git merge --continue ") $status -eq 0
-@test "git merge --abort should not match" (not __fzf_complete_git_parse_cmdline "git merge --abort ") $status -eq 0
-@test "git merge --quit should not match" (not __fzf_complete_git_parse_cmdline "git merge --quit ") $status -eq 0
+@test "git merge --continue should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge --continue ")) $status -eq 0
+@test "git merge --abort should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge --abort ")) $status -eq 0
+@test "git merge --quit should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge --quit ")) $status -eq 0
 
 # ============================================================
 # 25. git stash apply/drop/pop/show
@@ -312,25 +312,25 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git log with --oneline" (__fzf_complete_git_parse_cmdline "git log --oneline ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Log> ')
 
 # git log exclusions
-@test "git log --skip should not match" (not __fzf_complete_git_parse_cmdline "git log --skip ") $status -eq 0
-@test "git log --since should not match" (not __fzf_complete_git_parse_cmdline "git log --since ") $status -eq 0
-@test "git log --after should not match" (not __fzf_complete_git_parse_cmdline "git log --after ") $status -eq 0
-@test "git log --until should not match" (not __fzf_complete_git_parse_cmdline "git log --until ") $status -eq 0
-@test "git log --before should not match" (not __fzf_complete_git_parse_cmdline "git log --before ") $status -eq 0
-@test "git log --author should not match" (not __fzf_complete_git_parse_cmdline "git log --author ") $status -eq 0
-@test "git log --committer should not match" (not __fzf_complete_git_parse_cmdline "git log --committer ") $status -eq 0
-@test "git log --date should not match" (not __fzf_complete_git_parse_cmdline "git log --date ") $status -eq 0
-@test "git log --branches should not match" (not __fzf_complete_git_parse_cmdline "git log --branches ") $status -eq 0
-@test "git log --tags should not match" (not __fzf_complete_git_parse_cmdline "git log --tags ") $status -eq 0
-@test "git log --remotes should not match" (not __fzf_complete_git_parse_cmdline "git log --remotes ") $status -eq 0
-@test "git log --glob should not match" (not __fzf_complete_git_parse_cmdline "git log --glob ") $status -eq 0
-@test "git log --exclude should not match" (not __fzf_complete_git_parse_cmdline "git log --exclude ") $status -eq 0
-@test "git log --pretty should not match" (not __fzf_complete_git_parse_cmdline "git log --pretty ") $status -eq 0
-@test "git log --format should not match" (not __fzf_complete_git_parse_cmdline "git log --format ") $status -eq 0
-@test "git log --grep should not match" (not __fzf_complete_git_parse_cmdline "git log --grep ") $status -eq 0
-@test "git log --grep-reflog should not match" (not __fzf_complete_git_parse_cmdline "git log --grep-reflog ") $status -eq 0
-@test "git log --min-parents should not match" (not __fzf_complete_git_parse_cmdline "git log --min-parents ") $status -eq 0
-@test "git log --max-parents should not match" (not __fzf_complete_git_parse_cmdline "git log --max-parents ") $status -eq 0
+@test "git log --skip should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --skip ")) $status -eq 0
+@test "git log --since should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --since ")) $status -eq 0
+@test "git log --after should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --after ")) $status -eq 0
+@test "git log --until should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --until ")) $status -eq 0
+@test "git log --before should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --before ")) $status -eq 0
+@test "git log --author should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --author ")) $status -eq 0
+@test "git log --committer should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --committer ")) $status -eq 0
+@test "git log --date should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --date ")) $status -eq 0
+@test "git log --branches should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --branches ")) $status -eq 0
+@test "git log --tags should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --tags ")) $status -eq 0
+@test "git log --remotes should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --remotes ")) $status -eq 0
+@test "git log --glob should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --glob ")) $status -eq 0
+@test "git log --exclude should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --exclude ")) $status -eq 0
+@test "git log --pretty should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --pretty ")) $status -eq 0
+@test "git log --format should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --format ")) $status -eq 0
+@test "git log --grep should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --grep ")) $status -eq 0
+@test "git log --grep-reflog should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --grep-reflog ")) $status -eq 0
+@test "git log --min-parents should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --min-parents ")) $status -eq 0
+@test "git log --max-parents should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --max-parents ")) $status -eq 0
 
 # ============================================================
 # 31. git tag list commit
@@ -355,11 +355,11 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git tag with -a" (__fzf_complete_git_parse_cmdline "git tag -a ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag> ')
 
 # git tag exclusions
-@test "git tag -u should not match" (not __fzf_complete_git_parse_cmdline "git tag -u ") $status -eq 0
-@test "git tag -m should not match" (not __fzf_complete_git_parse_cmdline "git tag -m ") $status -eq 0
-@test "git tag -F should not match" (not __fzf_complete_git_parse_cmdline "git tag -F ") $status -eq 0
-@test "git tag --local-user should not match" (not __fzf_complete_git_parse_cmdline "git tag --local-user ") $status -eq 0
-@test "git tag --format should not match" (not __fzf_complete_git_parse_cmdline "git tag --format ") $status -eq 0
+@test "git tag -u should not match" (test -z (__fzf_complete_git_parse_cmdline "git tag -u ")) $status -eq 0
+@test "git tag -m should not match" (test -z (__fzf_complete_git_parse_cmdline "git tag -m ")) $status -eq 0
+@test "git tag -F should not match" (test -z (__fzf_complete_git_parse_cmdline "git tag -F ")) $status -eq 0
+@test "git tag --local-user should not match" (test -z (__fzf_complete_git_parse_cmdline "git tag --local-user ")) $status -eq 0
+@test "git tag --format should not match" (test -z (__fzf_complete_git_parse_cmdline "git tag --format ")) $status -eq 0
 
 # git tag verify
 @test "git tag -v" (__fzf_complete_git_parse_cmdline "git tag -v ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Verify> ')
@@ -388,8 +388,8 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git show with --stat" (__fzf_complete_git_parse_cmdline "git show --stat ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Show> ')
 
 # git show exclusions
-@test "git show --pretty should not match" (not __fzf_complete_git_parse_cmdline "git show --pretty ") $status -eq 0
-@test "git show --format should not match" (not __fzf_complete_git_parse_cmdline "git show --format ") $status -eq 0
+@test "git show --pretty should not match" (test -z (__fzf_complete_git_parse_cmdline "git show --pretty ")) $status -eq 0
+@test "git show --format should not match" (test -z (__fzf_complete_git_parse_cmdline "git show --format ")) $status -eq 0
 
 # ============================================================
 # 37. git revert
@@ -399,10 +399,10 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git revert with --no-commit" (__fzf_complete_git_parse_cmdline "git revert --no-commit ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_simple 'Git Revert> ')
 
 # git revert control flow exclusions
-@test "git revert --continue should not match" (not __fzf_complete_git_parse_cmdline "git revert --continue ") $status -eq 0
-@test "git revert --skip should not match" (not __fzf_complete_git_parse_cmdline "git revert --skip ") $status -eq 0
-@test "git revert --abort should not match" (not __fzf_complete_git_parse_cmdline "git revert --abort ") $status -eq 0
-@test "git revert --quit should not match" (not __fzf_complete_git_parse_cmdline "git revert --quit ") $status -eq 0
+@test "git revert --continue should not match" (test -z (__fzf_complete_git_parse_cmdline "git revert --continue ")) $status -eq 0
+@test "git revert --skip should not match" (test -z (__fzf_complete_git_parse_cmdline "git revert --skip ")) $status -eq 0
+@test "git revert --abort should not match" (test -z (__fzf_complete_git_parse_cmdline "git revert --abort ")) $status -eq 0
+@test "git revert --quit should not match" (test -z (__fzf_complete_git_parse_cmdline "git revert --quit ")) $status -eq 0
 
 # ============================================================
 # 38. git cherry-pick
@@ -412,10 +412,10 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git cherry-pick with commit" (__fzf_complete_git_parse_cmdline "git cherry-pick abc123 ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> ')
 
 # git cherry-pick exclusions (control flow options)
-@test "git cherry-pick --continue should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --continue ") $status -eq 0
-@test "git cherry-pick --abort should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --abort ") $status -eq 0
-@test "git cherry-pick --skip should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --skip ") $status -eq 0
-@test "git cherry-pick --quit should not match" (not __fzf_complete_git_parse_cmdline "git cherry-pick --quit ") $status -eq 0
+@test "git cherry-pick --continue should not match" (test -z (__fzf_complete_git_parse_cmdline "git cherry-pick --continue ")) $status -eq 0
+@test "git cherry-pick --abort should not match" (test -z (__fzf_complete_git_parse_cmdline "git cherry-pick --abort ")) $status -eq 0
+@test "git cherry-pick --skip should not match" (test -z (__fzf_complete_git_parse_cmdline "git cherry-pick --skip ")) $status -eq 0
+@test "git cherry-pick --quit should not match" (test -z (__fzf_complete_git_parse_cmdline "git cherry-pick --quit ")) $status -eq 0
 
 # ============================================================
 # 39. git blame
@@ -432,8 +432,8 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git worktree add -b with path" (__fzf_complete_git_parse_cmdline "git worktree add -b feature ../feature ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Worktree> ')
 
 # git worktree subcommands without completion
-@test "git worktree list should not match" (not __fzf_complete_git_parse_cmdline "git worktree list ") $status -eq 0
-@test "git worktree prune should not match" (not __fzf_complete_git_parse_cmdline "git worktree prune ") $status -eq 0
+@test "git worktree list should not match" (test -z (__fzf_complete_git_parse_cmdline "git worktree list ")) $status -eq 0
+@test "git worktree prune should not match" (test -z (__fzf_complete_git_parse_cmdline "git worktree prune ")) $status -eq 0
 
 # ============================================================
 # 41. git format-patch
@@ -442,9 +442,9 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git format-patch with -o" (__fzf_complete_git_parse_cmdline "git format-patch -o patches ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch> ')
 
 # git format-patch exclusions
-@test "git format-patch --in-reply-to should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --in-reply-to ") $status -eq 0
-@test "git format-patch --to should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --to ") $status -eq 0
-@test "git format-patch --cc should not match" (not __fzf_complete_git_parse_cmdline "git format-patch --cc ") $status -eq 0
+@test "git format-patch --in-reply-to should not match" (test -z (__fzf_complete_git_parse_cmdline "git format-patch --in-reply-to ")) $status -eq 0
+@test "git format-patch --to should not match" (test -z (__fzf_complete_git_parse_cmdline "git format-patch --to ")) $status -eq 0
+@test "git format-patch --cc should not match" (test -z (__fzf_complete_git_parse_cmdline "git format-patch --cc ")) $status -eq 0
 
 # git format-patch --interdiff/--range-diff
 @test "git format-patch --interdiff=" (__fzf_complete_git_parse_cmdline "git format-patch --interdiff=") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch Diff> ')
@@ -466,8 +466,8 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git push origin main" (__fzf_complete_git_parse_cmdline "git push origin main ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Push Branch> ')
 
 # git push exclusions
-@test "git push --repo should not match" (not __fzf_complete_git_parse_cmdline "git push --repo ") $status -eq 0
-@test "git push -o should not match" (not __fzf_complete_git_parse_cmdline "git push -o ") $status -eq 0
+@test "git push --repo should not match" (test -z (__fzf_complete_git_parse_cmdline "git push --repo ")) $status -eq 0
+@test "git push -o should not match" (test -z (__fzf_complete_git_parse_cmdline "git push -o ")) $status -eq 0
 
 # ============================================================
 # 44. git pull
@@ -485,8 +485,8 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git fetch origin main" (__fzf_complete_git_parse_cmdline "git fetch origin main ") = (printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Fetch Branch> ')
 
 # git fetch exclusions
-@test "git fetch --upload-pack should not match" (not __fzf_complete_git_parse_cmdline "git fetch --upload-pack ") $status -eq 0
-@test "git fetch --all should not match" (not __fzf_complete_git_parse_cmdline "git fetch --all ") $status -eq 0
+@test "git fetch --upload-pack should not match" (test -z (__fzf_complete_git_parse_cmdline "git fetch --upload-pack ")) $status -eq 0
+@test "git fetch --all should not match" (test -z (__fzf_complete_git_parse_cmdline "git fetch --all ")) $status -eq 0
 
 # ============================================================
 # 46. git bisect
@@ -502,10 +502,10 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git bisect reset" (__fzf_complete_git_parse_cmdline "git bisect reset ") = (printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> ')
 
 # git bisect subcommands without completion
-@test "git bisect next should not match" (not __fzf_complete_git_parse_cmdline "git bisect next ") $status -eq 0
-@test "git bisect log should not match" (not __fzf_complete_git_parse_cmdline "git bisect log ") $status -eq 0
-@test "git bisect run should not match" (not __fzf_complete_git_parse_cmdline "git bisect run ") $status -eq 0
-@test "git bisect replay should not match" (not __fzf_complete_git_parse_cmdline "git bisect replay ") $status -eq 0
+@test "git bisect next should not match" (test -z (__fzf_complete_git_parse_cmdline "git bisect next ")) $status -eq 0
+@test "git bisect log should not match" (test -z (__fzf_complete_git_parse_cmdline "git bisect log ")) $status -eq 0
+@test "git bisect run should not match" (test -z (__fzf_complete_git_parse_cmdline "git bisect run ")) $status -eq 0
+@test "git bisect replay should not match" (test -z (__fzf_complete_git_parse_cmdline "git bisect replay ")) $status -eq 0
 
 # git bisect start with -- (pathspec)
 @test "git bisect start with --" (__fzf_complete_git_parse_cmdline "git bisect start HEAD~10 HEAD -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Bisect Files> ')
@@ -513,7 +513,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # No match cases
 # ============================================================
-@test "unknown command returns 1" (not __fzf_complete_git_parse_cmdline "ls ") $status -eq 0
-@test "git without space returns 1" (not __fzf_complete_git_parse_cmdline "git") $status -eq 0
-@test "git status returns 1" (not __fzf_complete_git_parse_cmdline "git status ") $status -eq 0
-@test "git clone returns 1" (not __fzf_complete_git_parse_cmdline "git clone ") $status -eq 0
+@test "unknown command has no output" (test -z (__fzf_complete_git_parse_cmdline "ls ")) $status -eq 0
+@test "git without space has no output" (test -z (__fzf_complete_git_parse_cmdline "git")) $status -eq 0
+@test "git status has no output" (test -z (__fzf_complete_git_parse_cmdline "git status ")) $status -eq 0
+@test "git clone has no output" (test -z (__fzf_complete_git_parse_cmdline "git clone ")) $status -eq 0

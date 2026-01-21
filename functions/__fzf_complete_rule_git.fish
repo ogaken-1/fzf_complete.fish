@@ -27,38 +27,33 @@ end
 # source_type: branch, commit, tag, stash, status_file, ls_file (always singular)
 # multi: true or false
 # bind_type: ref_full, ref_simple, file, stash
-# Returns 1 if no match found
+# Outputs nothing if no match found
 function __fzf_complete_git_parse_cmdline
   set -l cmd $argv[1]
 
   # git add
   if string match -rq '^git add(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Add Files> '
-    return 0
 
   # git diff --cached/--merge-base commit
   else if string match -rq '^git diff(?: .*)? (?:--cached|--staged|--merge-base) $' -- $cmd
     and not string match -rq ' -- ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Diff Commit> '
-    return 0
 
   # git diff files (with --)
   else if string match -rq '^git diff(?=.* -- ) .* $' -- $cmd
     and not string match -rq '^git diff.* [^-].* -- ' -- $cmd
     and not string match -rq ' --no-index ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Diff Files> '
-    return 0
 
   # git diff branch files
   else if string match -rq '^git diff(?=.* -- ) .* $' -- $cmd
     or string match -rq '^git diff(?=.* --no-index ) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Diff Branch Files> '
-    return 0
 
   # git diff
   else if string match -rq '^git diff(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch true ref_full 'Git Diff> '
-    return 0
 
   # git commit -c/-C/--fixup/--squash
   else if string match -rq '^git commit(?: .*)? -[cC] $' -- $cmd
@@ -66,109 +61,90 @@ function __fzf_complete_git_parse_cmdline
     or string match -rq '^git commit(?: .*)? --(?:(?:reuse|reedit)-message|squash)[= ]$' -- $cmd
     and not string match -rq ' -- ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Commit> '
-    return 0
 
   # git commit files
   else if string match -rq '^git commit(?: .*) $' -- $cmd
     and not string match -rq ' -[mF] $' -- $cmd
     and not string match -rq ' --(?:author|date|template|trailer) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Commit Files> '
-    return 0
 
   # git checkout -b/-B with new branch name (start-point completion)
   else if string match -rq '^git checkout (?:-[bB]) [^ ]+ $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> '
-    return 0
 
   # git checkout branch files
   else if string match -rq '^git checkout(?=.*(?<! (?:-[bBt]|--orphan|--track|--conflict|--pathspec-from-file)) [^-]) .* $' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Checkout Branch Files> '
-    return 0
 
   # git checkout
   else if string match -rq '^git checkout(?: .*)? (?:--track=)?$' -- $cmd
     and not string match -rq ' -- ' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> '
-    return 0
 
   # git checkout files
   else if string match -rq '^git checkout(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Checkout Files> '
-    return 0
 
   # git branch --set-upstream-to/-u
   else if string match -rq '^git branch(?: .*)? (?:--set-upstream-to[= ]|-u )$' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> '
-    return 0
 
   # git branch -m/-M/-c/-C (rename/copy)
   else if string match -rq '^git branch (?:-[mMcC])(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> '
-    return 0
 
   # git branch --edit-description
   else if string match -rq '^git branch(?: .*)? --edit-description(?: )?$' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch> '
-    return 0
 
   # git branch --merged/--no-merged/--contains/--no-contains
   else if string match -rq '^git branch(?: .*)? --(?:no-)?(?:merged|contains) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Branch Filter> '
-    return 0
 
   # git branch -d/-D
   else if string match -rq '^git branch (?:-d|-D)(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Delete Branch> '
-    return 0
 
   # git reset branch files
   else if string match -rq '^git reset(?=.*(?<! --pathspec-from-file) [^-]) .* $' -- $cmd
     and not string match -rq ' --pathspec-from-file $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Reset Branch Files> '
-    return 0
 
   # git reset
   else if string match -rq '^git reset(?: .*)? $' -- $cmd
     and not string match -rq ' -- ' -- $cmd
     and not string match -rq ' --pathspec-from-file $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Reset> '
-    return 0
 
   # git reset files (fallback)
   else if string match -rq '^git reset(?: .*)? $' -- $cmd
     and not string match -rq ' --pathspec-from-file $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Reset Files> '
-    return 0
 
   # git switch -c/-C/--create with new branch name (start-point completion)
   else if string match -rq '^git switch (?:-[cC]|--create) [^ ]+ $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Switch Start> '
-    return 0
 
   # git switch --detach
   else if string match -rq '^git switch(?: .*)? --detach(?: )?$' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Switch Detach> '
-    return 0
 
   # git switch
   else if string match -rq '^git switch(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> '
-    return 0
 
   # git restore --source
   else if string match -rq '^git restore(?: .*)? (?:-s |--source[= ])$' -- $cmd
     and not string match -rq ' -- ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Restore Source> '
-    return 0
 
   # git restore source files
   else if string match -rq '^git restore(?=.* (?:-s |--source[= ])) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Restore Files> '
-    return 0
 
   # git restore --staged --worktree (both) - modified file completion
   else if string match -rq '^git restore .* $' -- $cmd
@@ -177,7 +153,6 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' (?:-s |--source[= ])' -- $cmd
     and not string match -rq ' --pathspec-from-file ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> '
-    return 0
 
   # git restore --staged (no source) - staged file completion
   else if string match -rq '^git restore .* $' -- $cmd
@@ -186,31 +161,26 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' (?:--worktree|-[SW]*W[SW]*)' -- $cmd
     and not string match -rq ' --pathspec-from-file ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' staged_file true file 'Git Restore Staged> '
-    return 0
 
   # git restore (no source) - modified file completion
   else if string match -rq '^git restore(?: .*)? $' -- $cmd
     and not string match -rq ' (?:-s |--source[= ])' -- $cmd
     and not string match -rq ' --pathspec-from-file ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' modified_file true file 'Git Restore> '
-    return 0
 
   # git rebase branch
   else if string match -rq '^git rebase(?=.*(?<! (?:-[xsX]|--exec|--strategy(?:-options)?|--onto)) [^-]) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Rebase Branch> '
-    return 0
 
   # git rebase
   else if string match -rq '^git rebase(?: .*)? (?:--onto[= ])?$' -- $cmd
     and not string match -rq ' -[xsX] $' -- $cmd
     and not string match -rq ' --(?:exec|strategy(?:-option)?) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Rebase> '
-    return 0
 
   # git merge --into-name
   else if string match -rq '^git merge(?: .*)? --into-name[= ]$' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Merge Branch> '
-    return 0
 
   # git merge
   else if string match -rq '^git merge(?: .*)? $' -- $cmd
@@ -218,38 +188,31 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' --(?:file|strategy(?:-option)?) $' -- $cmd
     and not string match -rq ' --(?:continue|abort|quit)' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Merge> '
-    return 0
 
   # git stash apply/drop/pop/show
   else if string match -rq '^git stash (?:apply|drop|pop|show)(?: .*)? $' -- $cmd
     or string match -rq '^git stash branch(?=.* [^-]) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' stash false stash 'Git Stash> '
-    return 0
 
   # git stash branch
   else if string match -rq '^git stash branch(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Stash Branch> '
-    return 0
 
   # git stash push files
   else if string match -rq '^git stash push(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Push Files> '
-    return 0
 
   # git stash save files (deprecated but still used)
   else if string match -rq '^git stash save(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Stash Save Files> '
-    return 0
 
   # git stash store
   else if string match -rq '^git stash store(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Stash Store> '
-    return 0
 
   # git log file
   else if string match -rq '^git log(?=.* -- ) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Log File> '
-    return 0
 
   # git log
   else if string match -rq '^git log(?: .*)? $' -- $cmd
@@ -258,22 +221,18 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' --grep(?:-reflog)? $' -- $cmd
     and not string match -rq ' --(?:min|max)-parents $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Log> '
-    return 0
 
   # git tag list commit
   else if string match -rq '^git tag(?=.* (?:-l|--list) )(?: .*)? --(?:(?:no-)?(?:contains|merged)|points-at) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> '
-    return 0
 
   # git tag verify
   else if string match -rq '^git tag(?: .*)? -v $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Verify> '
-    return 0
 
   # git tag delete
   else if string match -rq '^git tag(?=.* (?:-d|--delete) )(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> '
-    return 0
 
   # git tag create with commit (second positional argument)
   else if string match -rq '^git tag(?=.* [^-])(?: .*)? [^-][^ ]* $' -- $cmd
@@ -281,68 +240,56 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' -[umF] $' -- $cmd
     and not string match -rq ' --(?:local-user|format) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag Commit> '
-    return 0
 
   # git tag
   else if string match -rq '^git tag(?: .*)? $' -- $cmd
     and not string match -rq ' -[umF] $' -- $cmd
     and not string match -rq ' --(?:local-user|format) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag> '
-    return 0
 
   # git mv files
   else if string match -rq '^git mv(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Mv Files> '
-    return 0
 
   # git rm files
   else if string match -rq '^git rm(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Rm Files> '
-    return 0
 
   # git show
   else if string match -rq '^git show(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:pretty|format) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Show> '
-    return 0
 
   # git revert
   else if string match -rq '^git revert(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:continue|skip|abort|quit)' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit true ref_simple 'Git Revert> '
-    return 0
 
   # git cherry-pick
   else if string match -rq '^git cherry-pick(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:continue|abort|skip|quit)' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Cherry-pick> '
-    return 0
 
   # git blame
   else if string match -rq '^git blame(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file false file 'Git Blame> '
-    return 0
 
   # git worktree add
   else if string match -rq '^git worktree add(?=.* [^-]) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Worktree> '
-    return 0
 
   # git format-patch --interdiff/--range-diff
   else if string match -rq '^git format-patch(?: .*)? --(?:interdiff|range-diff)[= ]$' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch Diff> '
-    return 0
 
   # git format-patch
   else if string match -rq '^git format-patch(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:in-reply-to|to|cc) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Format-patch> '
-    return 0
 
   # git describe
   else if string match -rq '^git describe(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Describe> '
-    return 0
 
   # git push remote
   else if string match -rq '^git push(?: .*)? $' -- $cmd
@@ -350,25 +297,21 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' --(?:repo|receive-pack|push-option|signed) $' -- $cmd
     and not string match -rq ' -o $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' remote false file 'Git Push Remote> '
-    return 0
 
   # git push branch (after remote)
   else if string match -rq '^git push(?=.* [^-]) .* $' -- $cmd
     and not string match -rq ' --(?:repo|receive-pack|push-option|signed) $' -- $cmd
     and not string match -rq ' -o $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Push Branch> '
-    return 0
 
   # git pull remote
   else if string match -rq '^git pull(?: .*)? $' -- $cmd
     and not string match -rq '^git pull(?=.* [^-]) .* ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' remote false file 'Git Pull Remote> '
-    return 0
 
   # git pull branch (after remote)
   else if string match -rq '^git pull(?=.* [^-]) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Pull Branch> '
-    return 0
 
   # git fetch remote
   else if string match -rq '^git fetch(?: .*)? $' -- $cmd
@@ -377,7 +320,6 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' --all' -- $cmd
     and not string match -rq ' -o $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' remote false file 'Git Fetch Remote> '
-    return 0
 
   # git fetch branch (after remote)
   else if string match -rq '^git fetch(?=.* [^-]) .* $' -- $cmd
@@ -385,20 +327,14 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' --all' -- $cmd
     and not string match -rq ' -o $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch true ref_simple 'Git Fetch Branch> '
-    return 0
 
   # git bisect start with -- (pathspec)
   else if string match -rq '^git bisect start(?=.* -- ) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Bisect Files> '
-    return 0
 
   # git bisect (start/bad/good/new/old/skip/reset)
   else if string match -rq '^git bisect (?:start|bad|good|new|old|skip|reset)(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit true ref_full 'Git Bisect> '
-    return 0
-
-  else
-    return 1
   end
 end
 
@@ -496,7 +432,7 @@ function __fzf_complete_rule_git
 
   # Parse commandline to get completion metadata
   set -l parse_result (__fzf_complete_git_parse_cmdline $cmd)
-  or return 1
+  test -z "$parse_result" && return 1
 
   # Split result into source_type, multi, bind_type, and prompt
   set -l parts (string split \t $parse_result)
