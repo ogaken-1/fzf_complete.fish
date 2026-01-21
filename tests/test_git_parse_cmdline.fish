@@ -170,9 +170,9 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 18. git switch
 # ============================================================
-@test "git switch" (__fzf_complete_git_parse_cmdline "git switch ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
-@test "git switch with -c" (__fzf_complete_git_parse_cmdline "git switch -c ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
-@test "git switch with --create" (__fzf_complete_git_parse_cmdline "git switch --create ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> ')
+@test "git switch" (__fzf_complete_git_parse_cmdline "git switch ") = (printf '%s\t%s\t%s\t%s\n' switch_branch false ref_simple 'Git Switch> ')
+@test "git switch with -c" (__fzf_complete_git_parse_cmdline "git switch -c ") = (printf '%s\t%s\t%s\t%s\n' switch_branch false ref_simple 'Git Switch> ')
+@test "git switch with --create" (__fzf_complete_git_parse_cmdline "git switch --create ") = (printf '%s\t%s\t%s\t%s\n' switch_branch false ref_simple 'Git Switch> ')
 
 # git switch start-point
 @test "git switch -c newbranch" (__fzf_complete_git_parse_cmdline "git switch -c newbranch ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Switch Start> ')

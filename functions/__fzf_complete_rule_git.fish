@@ -141,7 +141,7 @@ function __fzf_complete_git_parse_cmdline
 
   # git switch
   else if string match -rq '^git switch(?: .*)? $' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Switch> '
+    printf '%s\t%s\t%s\t%s\n' switch_branch false ref_simple 'Git Switch> '
 
   # git restore --source
   else if string match -rq '^git restore(?: .*)? (?:-s |--source[= ])$' -- $cmd
@@ -383,6 +383,11 @@ function __fzf_complete_git_build_config
 
     case remote_branch
       set source $FZF_COMPLETE_GIT_REMOTE_BRANCH_SOURCE
+      set transformer __fzf_complete_git_ref_to_arg
+      set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER
+
+    case switch_branch
+      set source $FZF_COMPLETE_GIT_SWITCH_BRANCH_SOURCE
       set transformer __fzf_complete_git_ref_to_arg
       set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER
 

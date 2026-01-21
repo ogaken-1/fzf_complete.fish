@@ -163,3 +163,9 @@ end
 # ============================================================
 @test "remote_branch: source is remote branch source" (__fzf_complete_git_build_config remote_branch false ref_simple 'test> ' | string split0)[1] = $FZF_COMPLETE_GIT_REMOTE_BRANCH_SOURCE
 @test "remote_branch: transformer is ref_to_arg" (__fzf_complete_git_build_config remote_branch false ref_simple 'test> ' | string split0)[2] = __fzf_complete_git_ref_to_arg
+
+# ============================================================
+# switch_branch
+# ============================================================
+@test "switch_branch: source is switch branch source" (__fzf_complete_git_build_config switch_branch false ref_simple 'test> ' | string split0)[1] = $FZF_COMPLETE_GIT_SWITCH_BRANCH_SOURCE
+@test "switch_branch: transformer is ref_to_arg" (__fzf_complete_git_build_config switch_branch false ref_simple 'test> ' | string split0)[2] = __fzf_complete_git_ref_to_arg
