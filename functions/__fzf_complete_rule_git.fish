@@ -72,22 +72,26 @@ function __fzf_complete_git_parse_cmdline
   else if string match -rq '^git checkout (?:-[bB]|--orphan) [^ ]+ $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> '
 
+  # git checkout -b/-B with --track (remote branch completion)
+  else if string match -rq '^git checkout -[bB] [^ ]+ (?:--track[= ]?|-t )$' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout Track> '
+
   # git checkout branch files
   else if string match -rq '^git checkout(?=.*(?<! (?:-[bBt]|--orphan|--track|--conflict|--pathspec-from-file)) [^-]) .* $' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Checkout Branch Files> '
 
   # git checkout
-  else if string match -rq '^git checkout(?: .*)? (?:--track=)?$' -- $cmd
+  else if string match -rq '^git checkout(?: .*)? $' -- $cmd
     and not string match -rq ' -- ' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
-    and not string match -rq ' (?:-[bB]|--orphan) $' -- $cmd
+    and not string match -rq ' (?:-[bBt]|--orphan|--track[= ]?) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> '
 
   # git checkout files
   else if string match -rq '^git checkout(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
-    and not string match -rq ' (?:-[bB]|--orphan) $' -- $cmd
+    and not string match -rq ' (?:-[bBt]|--orphan|--track[= ]?) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Checkout Files> '
 
   # git branch --set-upstream-to/-u
