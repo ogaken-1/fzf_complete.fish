@@ -80,12 +80,12 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git checkout --orphan branch should be start-point" (__fzf_complete_git_parse_cmdline "git checkout --orphan main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> ')
 
 # git checkout -b/-B with --track (remote branch completion)
-@test "git checkout -b with --track" (__fzf_complete_git_parse_cmdline "git checkout -b foo --track ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout Track> ')
-@test "git checkout -B with --track" (__fzf_complete_git_parse_cmdline "git checkout -B foo --track ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout Track> ')
-@test "git checkout -b with --track=" (__fzf_complete_git_parse_cmdline "git checkout -b foo --track=") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout Track> ')
-@test "git checkout -b with -t" (__fzf_complete_git_parse_cmdline "git checkout -b foo -t ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout Track> ')
-@test "git checkout -B with --track=" (__fzf_complete_git_parse_cmdline "git checkout -B foo --track=") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout Track> ')
-@test "git checkout -B with -t" (__fzf_complete_git_parse_cmdline "git checkout -B foo -t ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout Track> ')
+@test "git checkout -b with --track" (__fzf_complete_git_parse_cmdline "git checkout -b foo --track ") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Checkout Track> ')
+@test "git checkout -B with --track" (__fzf_complete_git_parse_cmdline "git checkout -B foo --track ") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Checkout Track> ')
+@test "git checkout -b with --track=" (__fzf_complete_git_parse_cmdline "git checkout -b foo --track=") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Checkout Track> ')
+@test "git checkout -B with --track=" (__fzf_complete_git_parse_cmdline "git checkout -B foo --track=") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Checkout Track> ')
+@test "git checkout -b with -t" (__fzf_complete_git_parse_cmdline "git checkout -b foo -t ") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Checkout Track> ')
+@test "git checkout -B with -t" (__fzf_complete_git_parse_cmdline "git checkout -B foo -t ") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Checkout Track> ')
 
 # ============================================================
 # 8. git checkout (branch completion)
@@ -120,9 +120,9 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 11. git branch upstream
 # ============================================================
-@test "git branch -u" (__fzf_complete_git_parse_cmdline "git branch -u ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> ')
-@test "git branch --set-upstream-to=" (__fzf_complete_git_parse_cmdline "git branch --set-upstream-to=") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> ')
-@test "git branch --set-upstream-to " (__fzf_complete_git_parse_cmdline "git branch --set-upstream-to ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> ')
+@test "git branch -u" (__fzf_complete_git_parse_cmdline "git branch -u ") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Branch Upstream> ')
+@test "git branch --set-upstream-to=" (__fzf_complete_git_parse_cmdline "git branch --set-upstream-to=") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Branch Upstream> ')
+@test "git branch --set-upstream-to " (__fzf_complete_git_parse_cmdline "git branch --set-upstream-to ") = (printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Branch Upstream> ')
 
 # ============================================================
 # 12. git branch edit-description

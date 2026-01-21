@@ -157,3 +157,9 @@ end
 # ============================================================
 @test "remote: source is remote source" (__fzf_complete_git_build_config remote false file 'test> ' | string split0)[1] = $FZF_COMPLETE_GIT_REMOTE_SOURCE
 @test "remote: transformer is empty" (__fzf_complete_git_build_config remote false file 'test> ' | string split0)[2] = ''
+
+# ============================================================
+# remote_branch
+# ============================================================
+@test "remote_branch: source is remote branch source" (__fzf_complete_git_build_config remote_branch false ref_simple 'test> ' | string split0)[1] = $FZF_COMPLETE_GIT_REMOTE_BRANCH_SOURCE
+@test "remote_branch: transformer is ref_to_arg" (__fzf_complete_git_build_config remote_branch false ref_simple 'test> ' | string split0)[2] = __fzf_complete_git_ref_to_arg

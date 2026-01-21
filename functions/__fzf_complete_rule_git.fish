@@ -74,7 +74,7 @@ function __fzf_complete_git_parse_cmdline
 
   # git checkout -b/-B with --track (remote branch completion)
   else if string match -rq '^git checkout -[bB] [^ ]+ (?:--track[= ]?|-t )$' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout Track> '
+    printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Checkout Track> '
 
   # git checkout branch files
   else if string match -rq '^git checkout(?=.*(?<! (?:-[bBt]|--orphan|--track|--conflict|--pathspec-from-file)) [^-]) .* $' -- $cmd
@@ -96,7 +96,7 @@ function __fzf_complete_git_parse_cmdline
 
   # git branch --set-upstream-to/-u
   else if string match -rq '^git branch(?: .*)? (?:--set-upstream-to[= ]|-u )$' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Branch Upstream> '
+    printf '%s\t%s\t%s\t%s\n' remote_branch false ref_simple 'Git Branch Upstream> '
 
   # git branch -m/-M/-c/-C (rename/copy)
   else if string match -rq '^git branch (?:-[mMcC])(?: .*)? $' -- $cmd
@@ -380,6 +380,11 @@ function __fzf_complete_git_build_config
     case branch
       set source $FZF_COMPLETE_GIT_BRANCH_SOURCE
       set transformer __fzf_complete_git_ref_to_arg
+
+    case remote_branch
+      set source $FZF_COMPLETE_GIT_REMOTE_BRANCH_SOURCE
+      set transformer __fzf_complete_git_ref_to_arg
+      set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER
 
     case commit
       set source $FZF_COMPLETE_GIT_LOG_SOURCE

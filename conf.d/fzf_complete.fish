@@ -22,6 +22,7 @@ set -g FZF_COMPLETE_GIT_STAGED_SOURCE 'git diff --cached --name-only --relative 
 set -g FZF_COMPLETE_GIT_MODIFIED_SOURCE 'git diff --name-only --relative -z'
 set -g FZF_COMPLETE_GIT_LOG_SOURCE "git log --decorate --color=always --format='%C(green)[commit] $FZF_COMPLETE_GIT_LOG_FORMAT' | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_BRANCH_SOURCE "git for-each-ref refs/heads refs/remotes --color=always --format='%(color:green)[branch] $FZF_COMPLETE_GIT_REF_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
+set -g FZF_COMPLETE_GIT_REMOTE_BRANCH_SOURCE "git for-each-ref refs/remotes --color=always --format='%(color:green)[remote] $FZF_COMPLETE_GIT_REF_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_TAG_SOURCE "git for-each-ref refs/tags --color=always --format='%(color:green)[tag] $FZF_COMPLETE_GIT_REF_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_REFLOG_SOURCE "git reflog --decorate --color=always --format='%C(green)[reflog] $FZF_COMPLETE_GIT_LOG_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_STASH_SOURCE "git stash list --color=always --format='$FZF_COMPLETE_GIT_STASH_FORMAT' | column -t -s (printf '\\t')"
@@ -36,7 +37,7 @@ set -g FZF_COMPLETE_GIT_LOG_PREVIEW 'git show --color=always {2}'
 set -g FZF_COMPLETE_GIT_STASH_PREVIEW 'git show --color=always {1}'
 set -g FZF_COMPLETE_GIT_REF_PREVIEW "
   switch {1}
-    case '[branch]'
+    case '[branch]' '[remote]'
       git log {2} --decorate --pretty='format:%C(yellow)%h %C(green)%cd %C(reset)%s%C(red)%d %C(cyan)[%an]' --date=iso --graph --color=always
     case '[tag]'
       git log {2} --pretty='format:%C(yellow)%h %C(green)%cd %C(reset)%s%C(red)%d %C(cyan)[%an]' --date=iso --graph --color=always
