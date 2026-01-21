@@ -62,10 +62,15 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' -- ' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Commit> '
 
+  # git commit --author
+  else if string match -rq '^git commit(?: .*)? --author[= ]$' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' author false author 'Git Commit Author> '
+
   # git commit files
   else if string match -rq '^git commit(?: .*) $' -- $cmd
     and not string match -rq ' -[mF] $' -- $cmd
     and not string match -rq ' --(?:author|date|template|trailer) $' -- $cmd
+    and not string match -rq ' --author[= ][^ ]+ $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Commit Files> '
 
   # git checkout -b/-B/--orphan with new branch name (start-point completion)
@@ -216,6 +221,14 @@ function __fzf_complete_git_parse_cmdline
   else if string match -rq '^git stash store(?: .*)? $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_simple 'Git Stash Store> '
 
+  # git log --author
+  else if string match -rq '^git log(?: .*)? --author[= ]$' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' author false author 'Git Log Author> '
+
+  # git shortlog --author
+  else if string match -rq '^git shortlog(?: .*)? --author[= ]$' -- $cmd
+    printf '%s\t%s\t%s\t%s\n' author false author 'Git Shortlog Author> '
+
   # git log file
   else if string match -rq '^git log(?=.* -- ) .* $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Log File> '
@@ -226,6 +239,7 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' --(?:branches|tags|remotes|glob|exclude|pretty|format) $' -- $cmd
     and not string match -rq ' --grep(?:-reflog)? $' -- $cmd
     and not string match -rq ' --(?:min|max)-parents $' -- $cmd
+    and not string match -rq ' --author[= ][^ ]+ $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Log> '
 
   # git tag list commit
@@ -407,6 +421,10 @@ function __fzf_complete_git_build_config
     case remote
       set source $FZF_COMPLETE_GIT_REMOTE_SOURCE
       set -a opts $FZF_COMPLETE_GIT_PRESET_REMOTE
+
+    case author
+      set source $FZF_COMPLETE_GIT_AUTHOR_SOURCE
+      set -a opts $FZF_COMPLETE_GIT_PRESET_AUTHOR
   end
 
   # Set opts based on bind_type for ref types (branch, commit, tag)

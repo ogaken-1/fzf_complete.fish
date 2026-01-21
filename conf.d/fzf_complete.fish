@@ -27,6 +27,7 @@ set -g FZF_COMPLETE_GIT_TAG_SOURCE "git for-each-ref refs/tags --color=always --
 set -g FZF_COMPLETE_GIT_REFLOG_SOURCE "git reflog --decorate --color=always --format='%C(green)[reflog] $FZF_COMPLETE_GIT_LOG_FORMAT' 2>/dev/null | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_STASH_SOURCE "git stash list --color=always --format='$FZF_COMPLETE_GIT_STASH_FORMAT' | column -t -s (printf '\\t')"
 set -g FZF_COMPLETE_GIT_REMOTE_SOURCE 'git remote'
+set -g FZF_COMPLETE_GIT_AUTHOR_SOURCE "git log --format='%an <%ae>' | sort -u"
 
 # Switch branch source: local branches + filtered remote branches
 # Remote branches are shown if:
@@ -122,6 +123,7 @@ set -g FZF_COMPLETE_GIT_REF_PREVIEW "
       git show --color=always {2}
   end
 "
+set -g FZF_COMPLETE_GIT_AUTHOR_PREVIEW "git --no-pager log --author='{}' --oneline --color=always --format='%C(green)%h%C(reset) %C(yellow)%ad%C(reset) %s' --date=short | head -n 100"
 
 # === Key Bindings ===
 set -g FZF_COMPLETE_GIT_DEFAULT_BIND 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up,?:toggle-preview'
@@ -181,6 +183,10 @@ set -g FZF_COMPLETE_GIT_PRESET_STASH \
 
 set -g FZF_COMPLETE_GIT_PRESET_REMOTE \
   --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND
+
+set -g FZF_COMPLETE_GIT_PRESET_AUTHOR \
+  --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND \
+  --preview=$FZF_COMPLETE_GIT_AUTHOR_PREVIEW
 
 if [ -z "$FZF_COMPLETE_NO_DEFAULT_BINDING" ]
   bind tab fzf_complete

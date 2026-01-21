@@ -63,10 +63,30 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # git commit files exclusions
 @test "git commit -m should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit -m ")) $status -eq 0
 @test "git commit -F should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit -F ")) $status -eq 0
-@test "git commit --author should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit --author ")) $status -eq 0
 @test "git commit --date should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit --date ")) $status -eq 0
 @test "git commit --template should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit --template ")) $status -eq 0
 @test "git commit --trailer should not match" (test -z (__fzf_complete_git_parse_cmdline "git commit --trailer ")) $status -eq 0
+
+# ============================================================
+# 6.5. git commit --author
+# ============================================================
+@test "git commit --author " (__fzf_complete_git_parse_cmdline "git commit --author ") = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Commit Author> ')
+@test "git commit --author=" (__fzf_complete_git_parse_cmdline "git commit --author=") = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Commit Author> ')
+@test "git commit -m 'msg' --author " (__fzf_complete_git_parse_cmdline "git commit -m 'msg' --author ") = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Commit Author> ')
+
+# Negative cases: --author with value should NOT trigger author completion
+@test "git commit --author=foo should not match" (
+  test -z (__fzf_complete_git_parse_cmdline "git commit --author=foo ")
+) $status -eq 0
+
+@test "git commit --author foo should not match" (
+  test -z (__fzf_complete_git_parse_cmdline "git commit --author foo ")
+) $status -eq 0
+
+# Positive case: --amend with --author
+@test "git commit --amend --author " (
+  __fzf_complete_git_parse_cmdline "git commit --amend --author "
+) = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Commit Author> ')
 
 # ============================================================
 # 7. git checkout branch files
@@ -326,7 +346,6 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git log --after should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --after ")) $status -eq 0
 @test "git log --until should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --until ")) $status -eq 0
 @test "git log --before should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --before ")) $status -eq 0
-@test "git log --author should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --author ")) $status -eq 0
 @test "git log --committer should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --committer ")) $status -eq 0
 @test "git log --date should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --date ")) $status -eq 0
 @test "git log --branches should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --branches ")) $status -eq 0
@@ -340,6 +359,37 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git log --grep-reflog should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --grep-reflog ")) $status -eq 0
 @test "git log --min-parents should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --min-parents ")) $status -eq 0
 @test "git log --max-parents should not match" (test -z (__fzf_complete_git_parse_cmdline "git log --max-parents ")) $status -eq 0
+
+# ============================================================
+# 30.5 git log --author
+# ============================================================
+@test "git log --author " (__fzf_complete_git_parse_cmdline "git log --author ") = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Log Author> ')
+@test "git log --author=" (__fzf_complete_git_parse_cmdline "git log --author=") = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Log Author> ')
+@test "git log --oneline --author " (__fzf_complete_git_parse_cmdline "git log --oneline --author ") = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Log Author> ')
+
+# Negative cases: --author with value should NOT trigger author completion
+@test "git log --author=foo should not match" (
+  test -z (__fzf_complete_git_parse_cmdline "git log --author=foo ")
+) $status -eq 0
+
+@test "git log --author foo should not match" (
+  test -z (__fzf_complete_git_parse_cmdline "git log --author foo ")
+) $status -eq 0
+
+# ============================================================
+# 30.6 git shortlog --author
+# ============================================================
+@test "git shortlog --author " (__fzf_complete_git_parse_cmdline "git shortlog --author ") = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Shortlog Author> ')
+@test "git shortlog --author=" (__fzf_complete_git_parse_cmdline "git shortlog --author=") = (printf '%s\t%s\t%s\t%s\n' author false author 'Git Shortlog Author> ')
+
+# Negative cases
+@test "git shortlog --author=foo should not match" (
+  test -z (__fzf_complete_git_parse_cmdline "git shortlog --author=foo ")
+) $status -eq 0
+
+@test "git shortlog --author foo should not match" (
+  test -z (__fzf_complete_git_parse_cmdline "git shortlog --author foo ")
+) $status -eq 0
 
 # ============================================================
 # 31. git tag list commit
