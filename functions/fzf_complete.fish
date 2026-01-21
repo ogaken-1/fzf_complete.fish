@@ -39,7 +39,7 @@ function __fzf_complete_run
     end
   end
 
-  commandline -a (string join ' ' -- (string escape -- $results))
+  commandline -i (string join ' ' -- (string escape -- $results))
   commandline -f repaint
 end
 
