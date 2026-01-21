@@ -44,6 +44,12 @@ function __fzf_complete_run
 end
 
 function fzf_complete
+  # Skip fzf completion when fish's pager is active (cycling through native completions)
+  if commandline --paging-mode
+    commandline -f complete
+    return
+  end
+
   __fzf_complete_load_rules
 
   for func in (functions -a | string match '__fzf_complete_rule_*')
