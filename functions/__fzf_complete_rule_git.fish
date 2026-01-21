@@ -86,7 +86,7 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' -- ' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
     and not string match -rq ' (?:-[bBt]|--orphan|--track[= ]?) $' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> '
+    printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout> '
 
   # git checkout files
   else if string match -rq '^git checkout(?: .*)? $' -- $cmd

@@ -90,7 +90,7 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 8. git checkout (branch completion)
 # ============================================================
-@test "git checkout" (__fzf_complete_git_parse_cmdline "git checkout ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
+@test "git checkout" (__fzf_complete_git_parse_cmdline "git checkout ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout> ')
 
 # git checkout exclusions (new branch name position - should not trigger completion)
 @test "git checkout -b should not match" (test -z (__fzf_complete_git_parse_cmdline "git checkout -b ")) $status -eq 0
