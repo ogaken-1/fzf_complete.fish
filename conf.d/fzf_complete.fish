@@ -3,8 +3,8 @@
 # Git completion patterns ported from zeno.zsh
 # https://github.com/yuki-yano/zeno.zsh
 #
-# MIT License
-# Copyright (c) 2021 Yuki Yano
+# SPDX-License-Identifier: MIT
+# See LICENSE file for full license information
 
 # === User Configuration ===
 set -g FZF_COMPLETE_GIT_CAT 'cat'
