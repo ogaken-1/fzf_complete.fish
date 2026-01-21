@@ -95,6 +95,42 @@ set -g FZF_COMPLETE_GIT_PRESET_AUTHOR \
   --bind=$FZF_COMPLETE_GIT_DEFAULT_BIND \
   --preview=$FZF_COMPLETE_GIT_AUTHOR_PREVIEW
 
+# ============================================================
+# Docker Configuration
+# ============================================================
+
+# === Docker Preview Commands ===
+set -g FZF_COMPLETE_DOCKER_CONTAINER_PREVIEW 'docker inspect {1} 2>/dev/null | jq -C ".[0] | {Id, Name, Image, State, Mounts: .Mounts[0:3], Ports: .NetworkSettings.Ports}" 2>/dev/null || docker inspect {1}'
+set -g FZF_COMPLETE_DOCKER_IMAGE_PREVIEW 'docker inspect {1} 2>/dev/null | jq -C ".[0] | {Id, RepoTags, Size, Created, Architecture, Os}" 2>/dev/null || docker inspect {1}'
+set -g FZF_COMPLETE_DOCKER_VOLUME_PREVIEW 'docker volume inspect {1} 2>/dev/null | jq -C ".[0]" 2>/dev/null || docker volume inspect {1}'
+set -g FZF_COMPLETE_DOCKER_NETWORK_PREVIEW 'docker network inspect {1} 2>/dev/null | jq -C ".[0] | {Name, Driver, Scope, IPAM, Containers}" 2>/dev/null || docker network inspect {1}'
+
+# === Docker Key Bindings ===
+set -g FZF_COMPLETE_DOCKER_DEFAULT_BIND 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up,?:toggle-preview'
+
+# === Docker Preset Options ===
+set -g FZF_COMPLETE_DOCKER_PRESET_CONTAINER \
+  --no-sort \
+  --bind=$FZF_COMPLETE_DOCKER_DEFAULT_BIND \
+  --preview=$FZF_COMPLETE_DOCKER_CONTAINER_PREVIEW \
+  --preview-window=right:50%
+
+set -g FZF_COMPLETE_DOCKER_PRESET_IMAGE \
+  --no-sort \
+  --bind=$FZF_COMPLETE_DOCKER_DEFAULT_BIND \
+  --preview=$FZF_COMPLETE_DOCKER_IMAGE_PREVIEW \
+  --preview-window=right:50%
+
+set -g FZF_COMPLETE_DOCKER_PRESET_VOLUME \
+  --bind=$FZF_COMPLETE_DOCKER_DEFAULT_BIND \
+  --preview=$FZF_COMPLETE_DOCKER_VOLUME_PREVIEW \
+  --preview-window=right:40%
+
+set -g FZF_COMPLETE_DOCKER_PRESET_NETWORK \
+  --bind=$FZF_COMPLETE_DOCKER_DEFAULT_BIND \
+  --preview=$FZF_COMPLETE_DOCKER_NETWORK_PREVIEW \
+  --preview-window=right:40%
+
 if [ -z "$FZF_COMPLETE_NO_DEFAULT_BINDING" ]
   bind tab fzf_complete
 end
