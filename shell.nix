@@ -8,7 +8,7 @@ let
     ];
   };
 in
-pkgs.mkShell {
+pkgs.mkShellNoCC {
   buildInputs = [
     fishWithPlugins
     pkgs.fzf
