@@ -375,55 +375,55 @@ function __fzf_complete_git_build_config
   # Set source and transformer based on source_type
   switch $source_type
     case status_file
-      set source $FZF_COMPLETE_GIT_STATUS_SOURCE
+      set source __fzf_complete_git_source_status
       set -a opts $FZF_COMPLETE_GIT_PRESET_STATUS
       set transformer __fzf_complete_git_status_to_arg
 
     case ls_file
-      set source $FZF_COMPLETE_GIT_LS_FILES_SOURCE
+      set source __fzf_complete_git_source_ls_files
       set -a opts $FZF_COMPLETE_GIT_PRESET_LS_FILES
 
     case staged_file
-      set source $FZF_COMPLETE_GIT_STAGED_SOURCE
+      set source __fzf_complete_git_source_staged
       set -a opts $FZF_COMPLETE_GIT_PRESET_STAGED
 
     case modified_file
-      set source $FZF_COMPLETE_GIT_MODIFIED_SOURCE
+      set source __fzf_complete_git_source_modified
       set -a opts $FZF_COMPLETE_GIT_PRESET_MODIFIED
 
     case branch
-      set source $FZF_COMPLETE_GIT_BRANCH_SOURCE
+      set source __fzf_complete_git_source_branch
       set transformer __fzf_complete_git_ref_to_arg
 
     case remote_branch
-      set source $FZF_COMPLETE_GIT_REMOTE_BRANCH_SOURCE
+      set source __fzf_complete_git_source_remote_branch
       set transformer __fzf_complete_git_ref_to_arg
       set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER
 
     case switch_branch
-      set source $FZF_COMPLETE_GIT_SWITCH_BRANCH_SOURCE
+      set source __fzf_complete_git_source_switch_branch
       set transformer __fzf_complete_git_ref_to_arg
       set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER
 
     case commit
-      set source $FZF_COMPLETE_GIT_LOG_SOURCE
+      set source __fzf_complete_git_source_log
       set transformer __fzf_complete_git_ref_to_arg
 
     case tag
-      set source $FZF_COMPLETE_GIT_TAG_SOURCE
+      set source __fzf_complete_git_source_tag
       set transformer __fzf_complete_git_ref_to_arg
 
     case stash
-      set source $FZF_COMPLETE_GIT_STASH_SOURCE
+      set source __fzf_complete_git_source_stash
       set -a opts $FZF_COMPLETE_GIT_PRESET_STASH
       set transformer __fzf_complete_git_stash_to_arg
 
     case remote
-      set source $FZF_COMPLETE_GIT_REMOTE_SOURCE
+      set source __fzf_complete_git_source_remote
       set -a opts $FZF_COMPLETE_GIT_PRESET_REMOTE
 
     case author
-      set source $FZF_COMPLETE_GIT_AUTHOR_SOURCE
+      set source __fzf_complete_git_source_author
       set -a opts $FZF_COMPLETE_GIT_PRESET_AUTHOR
   end
 

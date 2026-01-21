@@ -11,6 +11,9 @@
 
 source (status dirname)/../conf.d/fzf_complete.fish
 
+# Add functions directory to fish_function_path for autoloading
+set -g fish_function_path (status dirname)/../functions $fish_function_path
+
 # ============================================================
 # Helper functions
 # ============================================================
@@ -42,7 +45,7 @@ end
 
 # Get branch names from switch_branch source output (extracts second field after [switch])
 function _get_switch_branches
-    eval $FZF_COMPLETE_GIT_SWITCH_BRANCH_SOURCE 2>/dev/null | \
+    __fzf_complete_git_source_switch_branch 2>/dev/null | \
         string replace -ra '\x1b\[[0-9;]*m' '' | \
         string match -r '\[switch\]\s+(\S+)' | \
         string match -rv '^\[switch\]'

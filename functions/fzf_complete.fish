@@ -19,7 +19,13 @@ function __fzf_complete_run
   set -l opts $argv
 
   # Run fzf
-  set -l selections (eval $source | fzf $FZF_COMPLETE_COMMON_OPTS $opts | string split0)
+  # Check if source is a function, if so call directly, otherwise eval
+  set -l selections
+  if functions -q $source
+    set selections ($source | fzf $FZF_COMPLETE_COMMON_OPTS $opts | string split0)
+  else
+    set selections (eval $source | fzf $FZF_COMPLETE_COMMON_OPTS $opts | string split0)
+  end
 
   # first element is typed key (--expect)
   set -l key $selections[1]
