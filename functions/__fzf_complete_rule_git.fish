@@ -68,8 +68,8 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' --(?:author|date|template|trailer) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Commit Files> '
 
-  # git checkout -b/-B with new branch name (start-point completion)
-  else if string match -rq '^git checkout (?:-[bB]) [^ ]+ $' -- $cmd
+  # git checkout -b/-B/--orphan with new branch name (start-point completion)
+  else if string match -rq '^git checkout (?:-[bB]|--orphan) [^ ]+ $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> '
 
   # git checkout branch files
@@ -81,11 +81,13 @@ function __fzf_complete_git_parse_cmdline
   else if string match -rq '^git checkout(?: .*)? (?:--track=)?$' -- $cmd
     and not string match -rq ' -- ' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
+    and not string match -rq ' (?:-[bB]|--orphan) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> '
 
   # git checkout files
   else if string match -rq '^git checkout(?: .*)? $' -- $cmd
     and not string match -rq ' --(?:conflict|pathspec-from-file) $' -- $cmd
+    and not string match -rq ' (?:-[bB]|--orphan) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Checkout Files> '
 
   # git branch --set-upstream-to/-u

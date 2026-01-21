@@ -74,22 +74,24 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git checkout branch files" (__fzf_complete_git_parse_cmdline "git checkout main ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Checkout Branch Files> ')
 @test "git checkout branch files with --" (__fzf_complete_git_parse_cmdline "git checkout main -- ") = (printf '%s\t%s\t%s\t%s\n' ls_file true file 'Git Checkout Branch Files> ')
 
-# git checkout -b/-B with new branch name should trigger start-point completion
+# git checkout -b/-B/--orphan with new branch name should trigger start-point completion
 @test "git checkout -b branch should be start-point" (__fzf_complete_git_parse_cmdline "git checkout -b main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> ')
 @test "git checkout -B branch should be start-point" (__fzf_complete_git_parse_cmdline "git checkout -B main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> ')
+@test "git checkout --orphan branch should be start-point" (__fzf_complete_git_parse_cmdline "git checkout --orphan main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Checkout Start> ')
 
 # git checkout branch files should not trigger when preceded by these options
-@test "git checkout --orphan branch should not be checkout branch files" (__fzf_complete_git_parse_cmdline "git checkout --orphan main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
 @test "git checkout --track branch should not be checkout branch files" (__fzf_complete_git_parse_cmdline "git checkout --track main ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
 
 # ============================================================
 # 8. git checkout (branch completion)
 # ============================================================
 @test "git checkout" (__fzf_complete_git_parse_cmdline "git checkout ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
-@test "git checkout with -b" (__fzf_complete_git_parse_cmdline "git checkout -b ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
 @test "git checkout with --track=" (__fzf_complete_git_parse_cmdline "git checkout --track=") = (printf '%s\t%s\t%s\t%s\n' branch false ref_simple 'Git Checkout> ')
 
-# git checkout exclusions
+# git checkout exclusions (new branch name position - should not trigger completion)
+@test "git checkout -b should not match" (test -z (__fzf_complete_git_parse_cmdline "git checkout -b ")) $status -eq 0
+@test "git checkout -B should not match" (test -z (__fzf_complete_git_parse_cmdline "git checkout -B ")) $status -eq 0
+@test "git checkout --orphan should not match" (test -z (__fzf_complete_git_parse_cmdline "git checkout --orphan ")) $status -eq 0
 @test "git checkout with -- should not match branch" (__fzf_complete_git_parse_cmdline "git checkout -- ") = (printf '%s\t%s\t%s\t%s\n' status_file true file 'Git Checkout Files> ')
 @test "git checkout --conflict should not match" (test -z (__fzf_complete_git_parse_cmdline "git checkout --conflict ")) $status -eq 0
 @test "git checkout --pathspec-from-file should not match" (test -z (__fzf_complete_git_parse_cmdline "git checkout --pathspec-from-file ")) $status -eq 0
