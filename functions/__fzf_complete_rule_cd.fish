@@ -15,6 +15,7 @@ function __fzf_complete_rule_cd
       --read0 \
       --prompt='Chdir> ' \
       --preview='cd {} && ls -a | sed '"'"'/^[.]*$/d'"'"
+    return 0
   end
   return 1
 end
