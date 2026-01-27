@@ -252,7 +252,7 @@ function __fzf_complete_git_parse_cmdline
 
   # git tag delete
   else if string match -rq '^git tag(?=.* (?:-d|--delete) )(?: .*)? $' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> '
+    printf '%s\t%s\t%s\t%s\n' tag true ref_simple 'Git Tag Delete> '
 
   # git tag create with commit (second positional argument)
   else if string match -rq '^git tag(?=.* [^-])(?: .*)? [^-][^ ]* $' -- $cmd

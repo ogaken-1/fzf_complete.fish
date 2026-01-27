@@ -403,9 +403,9 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 32. git tag delete
 # ============================================================
-@test "git tag -d" (__fzf_complete_git_parse_cmdline "git tag -d ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> ')
-@test "git tag --delete" (__fzf_complete_git_parse_cmdline "git tag --delete ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> ')
-@test "git tag -d with tag" (__fzf_complete_git_parse_cmdline "git tag -d v1.0 ") = (printf '%s\t%s\t%s\t%s\n' tag false ref_simple 'Git Tag Delete> ')
+@test "git tag -d" (__fzf_complete_git_parse_cmdline "git tag -d ") = (printf '%s\t%s\t%s\t%s\n' tag true ref_simple 'Git Tag Delete> ')
+@test "git tag --delete" (__fzf_complete_git_parse_cmdline "git tag --delete ") = (printf '%s\t%s\t%s\t%s\n' tag true ref_simple 'Git Tag Delete> ')
+@test "git tag -d with tag" (__fzf_complete_git_parse_cmdline "git tag -d v1.0 ") = (printf '%s\t%s\t%s\t%s\n' tag true ref_simple 'Git Tag Delete> ')
 
 # ============================================================
 # 33. git tag (basic)
