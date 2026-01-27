@@ -399,6 +399,12 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 @test "git tag -l --merged" (__fzf_complete_git_parse_cmdline "git tag -l --merged ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
 @test "git tag --list --no-merged" (__fzf_complete_git_parse_cmdline "git tag --list --no-merged ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
 @test "git tag -l --points-at" (__fzf_complete_git_parse_cmdline "git tag -l --points-at ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
+# --contains, --no-contains, --merged, --no-merged implicitly enable list mode
+@test "git tag --contains" (__fzf_complete_git_parse_cmdline "git tag --contains ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
+@test "git tag --no-contains" (__fzf_complete_git_parse_cmdline "git tag --no-contains ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
+@test "git tag --merged" (__fzf_complete_git_parse_cmdline "git tag --merged ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
+@test "git tag --no-merged" (__fzf_complete_git_parse_cmdline "git tag --no-merged ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
+@test "git tag --points-at" (__fzf_complete_git_parse_cmdline "git tag --points-at ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> ')
 
 # ============================================================
 # 32. git tag delete

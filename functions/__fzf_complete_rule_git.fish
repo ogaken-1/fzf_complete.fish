@@ -243,7 +243,8 @@ function __fzf_complete_git_parse_cmdline
     printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Log> '
 
   # git tag list commit
-  else if string match -rq '^git tag(?=.* (?:-l|--list) )(?: .*)? --(?:(?:no-)?(?:contains|merged)|points-at) $' -- $cmd
+  # --contains, --no-contains, --merged, --no-merged, --points-at implicitly enable list mode
+  else if string match -rq '^git tag(?: .*)? --(?:(?:no-)?(?:contains|merged)|points-at) $' -- $cmd
     printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Tag List Commit> '
 
   # git tag verify
