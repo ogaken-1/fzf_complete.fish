@@ -198,7 +198,7 @@ function __fzf_complete_git_parse_cmdline
     and not string match -rq ' -[mFsX] $' -- $cmd
     and not string match -rq ' --(?:file|strategy(?:-option)?) $' -- $cmd
     and not string match -rq ' --(?:continue|abort|quit)' -- $cmd
-    printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Merge> '
+    printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Merge> '
 
   # git stash apply/drop/pop/show
   else if string match -rq '^git stash (?:apply|drop|pop|show)(?: .*)? $' -- $cmd

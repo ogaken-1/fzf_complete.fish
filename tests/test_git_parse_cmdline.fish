@@ -275,8 +275,8 @@ source (status dirname)/../functions/__fzf_complete_rule_git.fish
 # ============================================================
 # 24. git merge
 # ============================================================
-@test "git merge" (__fzf_complete_git_parse_cmdline "git merge ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Merge> ')
-@test "git merge with --no-ff" (__fzf_complete_git_parse_cmdline "git merge --no-ff ") = (printf '%s\t%s\t%s\t%s\n' commit false ref_full 'Git Merge> ')
+@test "git merge" (__fzf_complete_git_parse_cmdline "git merge ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Merge> ')
+@test "git merge with --no-ff" (__fzf_complete_git_parse_cmdline "git merge --no-ff ") = (printf '%s\t%s\t%s\t%s\n' branch false ref_full 'Git Merge> ')
 
 # git merge exclusions
 @test "git merge -m should not match" (test -z (__fzf_complete_git_parse_cmdline "git merge -m ")) $status -eq 0
