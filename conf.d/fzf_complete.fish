@@ -30,7 +30,7 @@ set -g FZF_COMPLETE_GIT_REF_PREVIEW "
       git show --color=always {2}
   end
 "
-set -g FZF_COMPLETE_GIT_AUTHOR_PREVIEW "git --no-pager log --author='{}' --oneline --color=always --format='%C(green)%h%C(reset) %C(yellow)%ad%C(reset) %s' --date=short | head -n 100"
+set -g FZF_COMPLETE_GIT_AUTHOR_PREVIEW "git --no-pager log --author={} --oneline --color=always --format='%C(green)%h%C(reset) %C(yellow)%ad%C(reset) %s' --date=short | head -n 100"
 
 # === Key Bindings ===
 set -g FZF_COMPLETE_GIT_DEFAULT_BIND 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up,?:toggle-preview'
